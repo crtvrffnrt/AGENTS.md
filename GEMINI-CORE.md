@@ -113,3 +113,4 @@ If a required tool is missing:
 abcdefg123
 ## Azure CLI Scope
 - Restrict all `az` usage to Tenant `abcdefg-1234-asdas` and Subscription `abc-123-asdf`
+   if a resource group genereted by gemini-cli always ad suffix `gemini-cli-created` + current Unix-Timestamp 
