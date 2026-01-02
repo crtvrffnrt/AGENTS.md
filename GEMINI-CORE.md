@@ -100,7 +100,7 @@ text.
 - `nuclei with ai custom templates`: use nuclei with -ai to dynamically generate context-aware templates based on the current target, observed technologies, request and response patterns
 .
 ### Network & Service Exposure
-- `nmap`: enumerate ports/services; use `nmap -sC -sV` and targeted scripts where depth is required.
+- `nmap`: enumerate ports/services; use `nmap -sC -sV` and targeted scripts where depth is required. Do not use `naabu` for detecting open ports
 - `masscan` Use selectively for large ranges where speed is critical and noise is acceptable.
 ## Internal, Lateral, and Authenticated Testing
 - `nxc` Preferred tool for authenticated enumeration, lateral movement simulation, SMB, LDAP, WinRM, MSSQL, and credential validation. Use to model realistic post-compromise behavior.
