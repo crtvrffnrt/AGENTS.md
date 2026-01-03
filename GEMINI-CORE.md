@@ -49,9 +49,9 @@ an.
 
 ### DNS Enum
 - Mix usage of dnsx commands like 
-```bash dns`x -l collected_subdomains.txt -cname``` 
+```dns`x -l collected_subdomains.txt -cname``` 
 - and shodan api calls like
-```bash curl "https://api.shodan.io/dns/domain/example.com?key=$SHODANAPI"  | jq ```
+```curl "https://api.shodan.io/dns/domain/example.com?key=$SHODANAPI"  | jq ```
 
 ## Webapplication Directory Enumeration 
 Effectively Identify hidden directories, files, and reachable paths that enable further exploitation.  
@@ -116,7 +116,8 @@ If a required tool is missing:
 -  Use pip install for Python tooling
 -  Use npm install for Node-based utilities
 ### Api key for Shodan
-abcdefg123
+- Shodan APIKEY is stored in $SHODANAPI
 ## Azure CLI Scope
-- Restrict all `az` usage to Tenant `abcdefg-1234-asdas` and Subscription `abc-123-asdf`
+- Use Environmetal Variables from current Session for $AZURE_AD_TENANT_ID and $AZURE_SUB_ID
+- Restrict all `az` usage to Tenant `$AZURE_AD_TENANT_ID` and Subscription `$AZURE_SUB_ID`
 - if a resource group genereted by gemini-cli always ad suffix `gemini-cli-created` + current Unix-Timestamp 
