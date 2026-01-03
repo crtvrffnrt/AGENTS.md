@@ -47,6 +47,12 @@ an.
 - `gau` and `waybackurls` Retrieve historical endpoints and parameters for expanded attack surface discovery.
 - `ffuf` to Perform focused content, parameter, and API fuzzing when manual enumeration indicates gaps.
 
+##DNS Enum
+- Mix usage of dnsx commands like 
+```bash dns`x -l collected_subdomains.txt -cname``` 
+- and shodan api calls like
+```bash curl "https://api.shodan.io/dns/domain/example.com?key=$SHODANAPI"  | jq ```
+
 ## Webapplication Directory Enumeration 
 Effectively Identify hidden directories, files, and reachable paths that enable further exploitation.  
 This step is mandatory for any detected web service before manual testing or exploitation. Additionaly to Katana from above use the tool: 
