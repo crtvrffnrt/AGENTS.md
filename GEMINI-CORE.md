@@ -47,11 +47,22 @@ an.
 - `gau` and `waybackurls` Retrieve historical endpoints and parameters for expanded attack surface discovery.
 - `ffuf` to Perform focused content, parameter, and API fuzzing when manual enumeration indicates gaps.
 
-### DNS Enum
-- Mix usage of dnsx commands like 
-```dns`x -l collected_subdomains.txt -cname``` 
-- and shodan api calls like
-```curl "https://api.shodan.io/dns/domain/example.com?key=$SHODANAPI"  | jq ```
+### DNS Enumeration and Takeover Signal Collection
+- Execution Order and Mandatory Workflow & Primary Enumeration DNS Authority First
+- dnsx is the mandatory primary tool (first choise) for all DNS enumeration.
+- It must be used to resolve, normalize, and classify DNS records before any external intelligence source is queried.
+- dnsx output is treated as the authoritative baseline.
+Example usage pattern (adjust for current use-case)
+```dnsx -l collected_subdomains.txt -cname -a -aaaa -ns -resp -json``` 
+Secondary Enrichment External Intelligence via Shodan
+After dnsx results are collected, the Shodan API must be queried to enrich, fullfill and expand visibility.
+Shodan is explicitly used to discover additional DNS data, historical records, and infrastructure mappings that may not appear in live DNS resolution.
+Example usage pattern (adjust for current use-case)
+```curl -s "https://api.shodan.io/dns/domain/example.com?key=$SHODANAPI" | jq```
+Shodan results are used to
+- Identify additional subdomains not present in the original list
+- Correlate historical or legacy CNAME targets
+- Detect cloud service patterns commonly associated with subdomain takeover
 
 ## Webapplication Directory Enumeration 
 Effectively Identify hidden directories, files, and reachable paths that enable further exploitation.  
