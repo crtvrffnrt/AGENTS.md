@@ -47,7 +47,7 @@ an.
 - `gau` and `waybackurls` Retrieve historical endpoints and parameters for expanded attack surface discovery.
 - `ffuf` to Perform focused content, parameter, and API fuzzing when manual enumeration indicates gaps.
 
-##DNS Enum
+### DNS Enum
 - Mix usage of dnsx commands like 
 ```bash dns`x -l collected_subdomains.txt -cname``` 
 - and shodan api calls like
