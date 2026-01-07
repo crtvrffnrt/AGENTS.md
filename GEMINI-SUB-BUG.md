@@ -148,3 +148,12 @@ Gemini must return
 1. A prioritized list of confirmed findings
 2. A prioritized list of strong hypotheses with the next minimal verification step
 3. A short set of platform ready report drafts following the Finding Template
+## Authenticated Session Reuse via cookies.txt
+Safely reuse an existing authenticated session when available to enable authenticated testing without reauthentication, brute force, or session manipulation.
+1. On startup, check whether a file named cookies.txt exists in the current working directory.
+2. If cookies.txt is present, assume it contains valid HTTP cookies in Netscape or curl-compatible format.
+3. Attempt a low impact authenticated verification request against an in-scope endpoint that reliably indicates authentication state, such as a profile, account, or whoami endpoint.
+4. Evaluate the response for clear authentication signals such as HTTP 200 with user context, absence of redirect to login, or presence of authenticated-only headers or content.
+5. If authentication appears valid, treat cookies.txt as the active authentication context.
+6. All subsequent HTTP requests to the target must include cookies.txt for session handling.
+7. If authentication fails or is ambiguous, do not attempt to refresh, brute force, or modify cookies. Continue strictly unauthenticated and surface a note that cookies.txt was present but invalid.
