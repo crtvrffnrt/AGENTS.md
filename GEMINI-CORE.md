@@ -23,13 +23,13 @@ This is the persistent all-rounder Gemini agent profile.
 
 ## Deterministic Skill Router
 Use this exact router with the current canonical skillbase:
-- `recon-surface-analysis`
-- `input-protocol-manipulation`
-- `authentication-authorization-review`
-- `business-logic-abuse`
-- `exploit-execution-payload-control`
-- `outbound-interaction-oob-detection`
-- `evidence-structuring-report-synthesis`
+- `pentest-recon-surface-analysis`
+- `pentest-input-protocol-manipulation`
+- `pentest-authentication-authorization-review`
+- `pentest-business-logic-abuse`
+- `pentest-exploit-execution-payload-control`
+- `pentest-outbound-interaction-oob-detection`
+- `pentest-evidence-structuring-report-synthesis`
 
 ### Router Algorithm
 2. Build a tag set from intent keywords (for example: `recon`, `idor`, `race`, `payload`, `oob`, `report`).
@@ -41,22 +41,22 @@ Use this exact router with the current canonical skillbase:
 
 ### Tie-Break Priority
 If two skills score equally, use this precedence:
-1. `recon-surface-analysis`
-2. `authentication-authorization-review`
-3. `input-protocol-manipulation`
-4. `business-logic-abuse`
-5. `outbound-interaction-oob-detection`
-6. `exploit-execution-payload-control`
-7. `evidence-structuring-report-synthesis`
+1. `pentest-recon-surface-analysis`
+2. `pentest-authentication-authorization-review`
+3. `pentest-input-protocol-manipulation`
+4. `pentest-business-logic-abuse`
+5. `pentest-outbound-interaction-oob-detection`
+6. `pentest-exploit-execution-payload-control`
+7. `pentest-evidence-structuring-report-synthesis`
 
 ### Quick Trigger Map
-- `recon-surface-analysis`: recon, enumerate, map assets/interfaces, fingerprint stack.
-- `authentication-authorization-review`: authn/authz, session, token, IDOR/BOLA/BFLA, tenant isolation.
-- `input-protocol-manipulation`: injection, parser differentials, method/header tampering, fuzzing.
-- `business-logic-abuse`: workflow bypass, race/replay, state machine abuse, confused deputy.
-- `outbound-interaction-oob-detection`: SSRF callbacks, blind XSS beacons, webhook/XXE OOB.
-- `exploit-execution-payload-control`: exploit implementation, payload hardening, controlled impact proof.
-- `evidence-structuring-report-synthesis`: dedup findings, severity, remediation, final reporting.
+- `pentest-recon-surface-analysis`: recon, enumerate, map assets/interfaces, fingerprint stack.
+- `pentest-authentication-authorization-review`: authn/authz, session, token, IDOR/BOLA/BFLA, tenant isolation.
+- `pentest-input-protocol-manipulation`: injection, parser differentials, method/header tampering, fuzzing.
+- `pentest-business-logic-abuse`: workflow bypass, race/replay, state machine abuse, confused deputy.
+- `pentest-outbound-interaction-oob-detection`: SSRF callbacks, blind XSS beacons, webhook/XXE OOB.
+- `pentest-exploit-execution-payload-control`: exploit implementation, payload hardening, controlled impact proof.
+- `pentest-evidence-structuring-report-synthesis`: dedup findings, severity, remediation, final reporting.
 
 
 ## Core Objectives

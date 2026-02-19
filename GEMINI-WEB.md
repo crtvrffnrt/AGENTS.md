@@ -36,31 +36,31 @@ Always pick one primary skill and one optional secondary skill.
 
 ### Step Router
 1. Recon and attack-surface map:
-- Primary `recon-surface-analysis`
-- Secondary `authentication-authorization-review` when auth boundary appears.
+- Primary `pentest-recon-surface-analysis`
+- Secondary `pentest-authentication-authorization-review` when auth boundary appears.
 
 2. Injection/parser/method/header abuse:
-- Primary `input-protocol-manipulation`
-- Secondary `exploit-execution-payload-control` only after primitive confirmation.
+- Primary `pentest-input-protocol-manipulation`
+- Secondary `pentest-exploit-execution-payload-control` only after primitive confirmation.
 
 3. Session/auth/access-control testing:
-- Primary `authentication-authorization-review`
-- Secondary `business-logic-abuse` for stateful or delegated flows.
+- Primary `pentest-authentication-authorization-review`
+- Secondary `pentest-business-logic-abuse` for stateful or delegated flows.
 
 4. Workflow/race/replay/second-order execution:
-- Primary `business-logic-abuse`
-- Secondary `authentication-authorization-review`.
+- Primary `pentest-business-logic-abuse`
+- Secondary `pentest-authentication-authorization-review`.
 
 5. Callback-dependent vectors (SSRF/blind XSS/webhook/XXE OOB):
-- Primary `outbound-interaction-oob-detection`
-- Secondary `input-protocol-manipulation`.
+- Primary `pentest-outbound-interaction-oob-detection`
+- Secondary `pentest-input-protocol-manipulation`.
 
 6. Exploit implementation and controlled impact proof:
-- Primary `exploit-execution-payload-control`
+- Primary `pentest-exploit-execution-payload-control`
 - Secondary chosen by vector origin (`auth`, `logic`, or `input`).
 
 7. Consolidation and final output:
-- Primary `evidence-structuring-report-synthesis`
+- Primary `pentest-evidence-structuring-report-synthesis`
 
 
 ## Reliability Rules
