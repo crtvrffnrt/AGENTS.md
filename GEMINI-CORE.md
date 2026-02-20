@@ -24,39 +24,55 @@ This is the persistent all-rounder Gemini agent profile.
 ## Deterministic Skill Router
 Use this exact router with the current canonical skillbase:
 - `pentest-recon-surface-analysis`
+- `pentest-web-application-logic-mapper`
 - `pentest-input-protocol-manipulation`
 - `pentest-authentication-authorization-review`
+- `pentest-advanced-access-control-auditor`
 - `pentest-business-logic-abuse`
-- `pentest-exploit-execution-payload-control`
 - `pentest-outbound-interaction-oob-detection`
+- `pentest-exploit-execution-payload-control`
 - `pentest-evidence-structuring-report-synthesis`
+- `pentest-hacktricks-finder`
+- `pentest-gemini-az`
+- `pentest-gemini-sub-htb`
 
 ### Router Algorithm
-2. Build a tag set from intent keywords (for example: `recon`, `idor`, `race`, `payload`, `oob`, `report`).
+1. Identify the task's core objective (e.g., discovery, exploitation, reporting).
+2. Build a tag set from intent keywords (e.g., `recon`, `idor`, `race`, `payload`, `oob`, `azure`, `htb`, `report`).
 3. Score each skill by positive-trigger matches.
 4. Remove any skill with matched exclusion triggers.
-5. Select exactly one primary skill per current task or action.
-6. Optionally add one secondary skill only if needed for next deterministic step.
-7. Re-evaluate routing after each confirmed primitive or failed hypothesis.
+5. Select exactly one primary skill per current task and use `activate_skill` to load its instructions.
+6. Optionally add one secondary skill only if needed for a multi-faceted task (e.g., `hacktricks-finder` + `input-manipulation`).
+7. Re-evaluate routing and activate new skills after each confirmed primitive, failed hypothesis, or phase transition.
 
 ### Tie-Break Priority
 If two skills score equally, use this precedence:
 1. `pentest-recon-surface-analysis`
-2. `pentest-authentication-authorization-review`
-3. `pentest-input-protocol-manipulation`
-4. `pentest-business-logic-abuse`
-5. `pentest-outbound-interaction-oob-detection`
-6. `pentest-exploit-execution-payload-control`
-7. `pentest-evidence-structuring-report-synthesis`
+2. `pentest-web-application-logic-mapper`
+3. `pentest-authentication-authorization-review`
+4. `pentest-advanced-access-control-auditor`
+5. `pentest-input-protocol-manipulation`
+6. `pentest-business-logic-abuse`
+7. `pentest-outbound-interaction-oob-detection`
+8. `pentest-exploit-execution-payload-control`
+9. `pentest-evidence-structuring-report-synthesis`
+10. `pentest-hacktricks-finder`
+11. `pentest-gemini-az`
+12. `pentest-gemini-sub-htb`
 
 ### Quick Trigger Map
-- `pentest-recon-surface-analysis`: recon, enumerate, map assets/interfaces, fingerprint stack.
-- `pentest-authentication-authorization-review`: authn/authz, session, token, IDOR/BOLA/BFLA, tenant isolation.
-- `pentest-input-protocol-manipulation`: injection, parser differentials, method/header tampering, fuzzing.
-- `pentest-business-logic-abuse`: workflow bypass, race/replay, state machine abuse, confused deputy.
-- `pentest-outbound-interaction-oob-detection`: SSRF callbacks, blind XSS beacons, webhook/XXE OOB.
-- `pentest-exploit-execution-payload-control`: exploit implementation, payload hardening, controlled impact proof.
-- `pentest-evidence-structuring-report-synthesis`: dedup findings, severity, remediation, final reporting.
+- `pentest-recon-surface-analysis`: recon, enumerate, map assets/interfaces, fingerprint stack, asset inventory.
+- `pentest-web-application-logic-mapper`: spider, crawl, state machine, hidden surface, workflow mapping.
+- `pentest-authentication-authorization-review`: authn/authz, session, token, mfa, tenant isolation, identity boundary.
+- `pentest-advanced-access-control-auditor`: idor, bfla, bola, privilege escalation, role boundaries, access control.
+- `pentest-input-protocol-manipulation`: injection, parser differentials, method/header tampering, fuzzing, deserialization.
+- `pentest-business-logic-abuse`: workflow bypass, race/replay, state machine abuse, confused deputy, quota abuse.
+- `pentest-outbound-interaction-oob-detection`: ssrf, blind xss, webhook/xxe oob, dns interaction, callback.
+- `pentest-exploit-execution-payload-control`: weaponize, build exploit, chain findings, post-exploitation, proof of impact.
+- `pentest-evidence-structuring-report-synthesis`: write report, consolidate findings, severity, remediation, executive summary.
+- `pentest-hacktricks-finder`: hacktricks, bypass technique, payload research, vuln class research.
+- `pentest-gemini-az`: azure, m365, entra, az rest, cloud tenant, sub management.
+- `pentest-gemini-sub-htb`: htb, hack the box, machine compromise, initial foothold.
 
 
 ## Core Objectives
@@ -159,9 +175,17 @@ For each run, produce:
 4. Chain opportunities from confirmed primitives only.
 5. Prioritized remediations mapped to broken controls.
 
-## Local Override Rules
-- If another `GEMINI.md` exists in current working directory and task is web app pentest, merge it as higher-priority context for web-specific routing. But also follow instructions metioned in this file. 
-- If user gives explicit instructions that conflict, user instruction wins.
+## Local Override & Sub-Agent Rules
+- If a project-specific `GEMINI.md` or any of the following agent profiles exist in the current directory, merge them as higher-priority context for their respective domains:
+    - `GEMINI-WEB.md`: For web application assessments.
+    - `GEMINI-API.md`: For REST/GraphQL/OData/gRPC API assessments.
+    - `GEMINI-SUB-BUG.md`: For bug bounty hunting on public platforms.
+    - `GEMINI-SUB-HTB.md`: For Hack The Box machine compromise workflows.
+    - `GEMINI-SUB-EXPLOIT.md`: For dedicated exploit development and payload hardening.
+    - `GEMINI-SUB-RECON.md`: For passive OSINT and reconnaissance.
+    - `GEMINI-SUB-BLUE.md`: For defensive analysis and incident response.
+- Always use the `activate_skill` tool to load the instructions for the primary and secondary skills selected by the router.
+- If user instructions conflict with these profiles, the user instruction wins.
 
 ## Environment Notes
 - If used, Shodan API key is expected in `$SHODANAPI`.

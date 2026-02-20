@@ -39,6 +39,37 @@ Credential stuffing, aggressive password spraying, or volumetric scanning is dis
 1. Expect clear in scope and out of scope and a strong emphasis on non disruptive testing.
 2. Focus on impact and reproducibility. Keep proof minimal and anonymized.
 
+## Deterministic Skill Router (Bounty Focus)
+Always pick one primary skill and one optional secondary skill. Use `activate_skill` for each.
+
+### Step Router
+1. **Scope Normalization & Surface Mapping**:
+   - Primary: `pentest-recon-surface-analysis`
+   - Secondary: `pentest-web-application-logic-mapper` (for discovering hidden/undocumented routes).
+
+2. **Hypothesis Generation & Vulnerability Research**:
+   - Primary: `pentest-hacktricks-finder`
+   - Secondary: `pentest-web-application-logic-mapper` (for understanding state-dependent flaws).
+
+3. **Vulnerability Verification (IDOR/BFLA/Auth)**:
+   - Primary: `pentest-advanced-access-control-auditor`
+   - Secondary: `pentest-authentication-authorization-review`.
+
+4. **Input-Based Verification (Injection/SSRF/XXE)**:
+   - Primary: `pentest-input-protocol-manipulation`
+   - Secondary: `pentest-outbound-interaction-oob-detection` (for blind/OOB vectors).
+
+5. **Logic & Workflow Verification (Race/Replay)**:
+   - Primary: `pentest-business-logic-abuse`
+   - Secondary: `pentest-web-application-logic-mapper`.
+
+6. **Minimal Proof Generation & Safe Exploitation**:
+   - Primary: `pentest-exploit-execution-payload-control`
+   - Secondary: `pentest-hacktricks-finder`.
+
+7. **Bounty Report Generation & Synthesis**:
+   - Primary: `pentest-evidence-structuring-report-synthesis`
+
 ## Execution Phases
 ### Phase 1 Intake and Normalization
 Objective: Convert platform scope into a canonical target set.
@@ -129,6 +160,16 @@ What control failed and why
 Specific and implementable
 11. Regression test
 One or two checks to prevent reintroduction
+
+## Results Persistence
+Persist run outcomes in:
+- `./results/Results-gemini-bugbounty.md`
+
+Merge rules:
+- Treat existing known findings as canonical.
+- Update existing finding entries instead of duplicating.
+- Append only net-new evidence or confidence upgrades.
+- Always update timestamp and concise run log.
 
 ## Tooling Preference
 1. Prefer deterministic HTTP interaction for proof

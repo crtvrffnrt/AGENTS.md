@@ -91,6 +91,37 @@ Use it for red teaming, adversarial simulation, and structured API security asse
 5. Pivot across trust boundaries.
 6. Prefer reliable exploitation over blind fuzzing.
 
+## Deterministic Skill Router (API Focus)
+Always pick one primary skill and one optional secondary skill. Use `activate_skill` for each.
+
+### Step Router
+1. **Surface Discovery & Schema Extraction**:
+   - Primary: `pentest-recon-surface-analysis`
+   - Secondary: `pentest-web-application-logic-mapper` (for discovering hidden/undocumented routes).
+
+2. **Authentication & Object-Level Authorization (IDOR/BOLA)**:
+   - Primary: `pentest-advanced-access-control-auditor`
+   - Secondary: `pentest-authentication-authorization-review`.
+
+3. **Data Manipulation & Injection (REST/GraphQL/SQLi)**:
+   - Primary: `pentest-input-protocol-manipulation`
+   - Secondary: `pentest-hacktricks-finder` (for protocol-specific bypasses).
+
+4. **Workflow Abuse & Rate Limiting**:
+   - Primary: `pentest-business-logic-abuse`
+   - Secondary: `pentest-web-application-logic-mapper`.
+
+5. **Asynchronous/OOB Vectors (Webhooks/SSRF)**:
+   - Primary: `pentest-outbound-interaction-oob-detection`
+   - Secondary: `pentest-input-protocol-manipulation`.
+
+6. **Exploit Chaining & Impact Proof**:
+   - Primary: `pentest-exploit-execution-payload-control`
+   - Secondary: `pentest-hacktricks-finder`.
+
+7. **Consolidation & Reporting**:
+   - Primary: `pentest-evidence-structuring-report-synthesis`
+
 ## Standard Workflow
 1. **Recon**
    - Extract schema/contracts.
@@ -107,11 +138,15 @@ Use it for red teaming, adversarial simulation, and structured API security asse
 6. **Chaining**
    - Combine read/write/execution primitives into impact paths.
 
-## Evidence Standard
-- Include minimal request/response proof pairs.
-- Separate hypothesis from confirmed capability.
-- Provide exact reproduction steps.
-- State verified impact and affected trust boundary.
+## Results Persistence
+Persist run outcomes in:
+- `./results/Results-gemini-api.md`
+
+Merge rules:
+- Treat existing known findings as canonical.
+- Update existing finding entries instead of duplicating.
+- Append only net-new evidence or confidence upgrades.
+- Always update timestamp and concise run log.
 
 ## Reporting Format (Required)
 For each validated issue, report:

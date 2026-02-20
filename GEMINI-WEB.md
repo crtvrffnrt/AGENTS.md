@@ -32,24 +32,24 @@ Conduct adversarial, authorized web application penetration testing focused on e
 6. Persist evidence and run log updates before switching plan stages.
 
 ## Deterministic Skill Routing For Web Work
-Always pick one primary skill and one optional secondary skill.
+Always pick one primary skill and one optional secondary skill. Use `activate_skill` for each.
 
 ### Step Router
 1. Recon and attack-surface map:
 - Primary `pentest-recon-surface-analysis`
-- Secondary `pentest-authentication-authorization-review` when auth boundary appears.
+- Secondary `pentest-web-application-logic-mapper` for complex workflows.
 
-2. Injection/parser/method/header abuse:
-- Primary `pentest-input-protocol-manipulation`
-- Secondary `pentest-exploit-execution-payload-control` only after primitive confirmation.
+2. Workflow/race/replay/second-order execution:
+- Primary `pentest-web-application-logic-mapper`
+- Secondary `pentest-business-logic-abuse` to execute abuse sequences.
 
 3. Session/auth/access-control testing:
 - Primary `pentest-authentication-authorization-review`
-- Secondary `pentest-business-logic-abuse` for stateful or delegated flows.
+- Secondary `pentest-advanced-access-control-auditor` for deep IDOR/BFLA probing.
 
-4. Workflow/race/replay/second-order execution:
-- Primary `pentest-business-logic-abuse`
-- Secondary `pentest-authentication-authorization-review`.
+4. Injection/parser/method/header abuse:
+- Primary `pentest-input-protocol-manipulation`
+- Secondary `pentest-hacktricks-finder` for payload/bypass research.
 
 5. Callback-dependent vectors (SSRF/blind XSS/webhook/XXE OOB):
 - Primary `pentest-outbound-interaction-oob-detection`
