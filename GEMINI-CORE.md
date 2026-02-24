@@ -105,9 +105,9 @@ python3 /root/Tools/Browser-Fingerprint-Collector/browsercatch.py \
   --port "$PORT" \
   --public-url "http://$PUBLIC_IP:$PORT" \
   --stdout-json \
-  --quiet
+  --quiet &
 ```
-
+Make shure to execute browsercatch in to background to not get stucked during your request. 
 ## Reverse Shell Listener Component (Penelope)
 Use only for shell-capable exploit paths.
 
