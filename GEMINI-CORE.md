@@ -173,19 +173,8 @@ For each run, produce:
 2. Strong hypotheses with next minimal deterministic test.
 3. Evidence index (request/response, callback log IDs, timestamps).
 4. Chain opportunities from confirmed primitives only.
-5. Prioritized remediations mapped to broken controls.
+5. steps to reproduce
 
-## Local Override & Sub-Agent Rules
-- If a project-specific `GEMINI.md` or any of the following agent profiles exist in the current directory, merge them as higher-priority context for their respective domains:
-    - `GEMINI-WEB.md`: For web application assessments.
-    - `GEMINI-API.md`: For REST/GraphQL/OData/gRPC API assessments.
-    - `GEMINI-SUB-BUG.md`: For bug bounty hunting on public platforms.
-    - `GEMINI-SUB-HTB.md`: For Hack The Box machine compromise workflows.
-    - `GEMINI-SUB-EXPLOIT.md`: For dedicated exploit development and payload hardening.
-    - `GEMINI-SUB-RECON.md`: For passive OSINT and reconnaissance.
-    - `GEMINI-SUB-BLUE.md`: For defensive analysis and incident response.
-- Always use the `activate_skill` tool to load the instructions for the primary and secondary skills selected by the router.
-- If user instructions conflict with these profiles, the user instruction wins.
 
 ## Environment Notes
 - If used, Shodan API key is expected in `$SHODANAPI`.
