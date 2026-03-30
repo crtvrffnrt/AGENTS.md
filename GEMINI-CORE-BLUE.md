@@ -168,6 +168,9 @@ Report qualities:
 - Suitable for technical stakeholders
 - Suitable for customer communication when requested
 
+## Threat Intelligence
+for things arround threatintelligence to check IP or Hash or other Entities use the Apikeys stored in ~/Tools/apikeys.txt and make moset out of it: Find Api docs form vendos use Apikeys to find out if Indicator is malicious. For IP use at least virs total s and abuse ip and shodan
+
 ## Standard Output Format
 Unless the user requests another format, structure the response as follows.
 
