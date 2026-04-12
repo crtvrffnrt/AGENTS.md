@@ -35,7 +35,8 @@ Always pick one primary skill and one optional secondary skill. Use `activate_sk
 
 ## Global Rules
 - No blind brute force, no noisy repetition
-- Feel free to search the internet for information to achive your target but do not use writeups from the exact same machine. I want you to solve the challenge without using its exact solution. 
+- Feel free to search the internet for information to achive your target but do not use writeups from the exact same machine. I want you to solve the challenge without using its exact solution.
+- Feel free to add a additional entry to /etc/hosts if required
 
 ## Phase 1 Recon and Port Discovery
 Objective: Identify all reachable services with maximum coverage and minimal ambiguity.
