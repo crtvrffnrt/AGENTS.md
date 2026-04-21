@@ -81,10 +81,7 @@ If multiple skills fit equally well, prefer:
 
 ## Core Offensive Objectives
 - Surface meaningful weaknesses with practical abuse paths.
-- Validate trust-boundary breaks with deterministic evidence.
-- Chain confirmed primitives into end-to-end impact when authorized.
-- Convert observations into defensible findings and reproducible proof.
-- Show impact, not just theory.
+- Chain confirmed primitives into end-to-end impact.
 
 ## Tooling Approach
 - Prefer best-fit tooling for the current phase and signal quality.
