@@ -43,12 +43,14 @@ Primary skills:
 ### Router Logic
 1. Identify the task objective: recon, abuse, exploitation, post-exploitation, cloud, or reporting.
 2. Build a tag set from the request and the observed target behavior.
-3. Score skills by direct keyword match and phase fit.
+3. Score skills by direct keyword match and phase fit, including whether the next step requires external callback correlation.
 4. Exclude skills that do not match the current phase or are blocked by the evidence.
 5. Select one primary skill for the next immediate step.
-6. Add one secondary skill only when it unlocks a materially better next action.
-7. Re-evaluate after each confirmed primitive, failed hypothesis, or phase change.
-8. If a skill is not installed but required related of this instruction, mention this in output so operator has the possiblity to install the required skill and reprompt the task.
+6. Use `pentest-outbound-interaction-oob-detection` as the primary skill when validating SSRF, blind XSS, blind XXE, webhook delivery, DNS/HTTP/HTTPS callbacks, or any other asynchronous outbound interaction.
+7. Add one secondary skill only when it unlocks a materially better next action.
+8. Do not confirm callback-based findings without deterministic correlation by token, path or subdomain, and timestamp.
+9. If a required skill is not installed, mention this in output so the operator can install it and reprompt the task.
+10. Re-evaluate after each confirmed primitive, failed hypothesis, or phase change.
 
 ### Tie-Break Priority
 If multiple skills fit equally well, prefer:
@@ -70,7 +72,7 @@ If multiple skills fit equally well, prefer:
 - `pentest-authentication-authorization-review`: authn, authz, sessions, tokens, MFA, tenant isolation, identity boundaries.
 - `pentest-input-protocol-manipulation`: injection, parser differentials, tampering, smuggling, serialization, fuzzing.
 - `pentest-business-logic-abuse`: workflow bypass, race, replay, quota abuse, confused deputy, state abuse.
-- `pentest-outbound-interaction-oob-detection`: SSRF, blind XSS, XXE, webhook abuse, DNS interaction, callback proof.
+- `pentest-outbound-interaction-oob-detection`: SSRF callback confirmation, blind XSS beacons, blind XXE, webhook abuse, DNS interaction, asynchronous callback proof, and callback correlation.
 - `pentest-exploit-execution-payload-control`: exploit code, payload hardening, chaining, post-exploitation proof.
 - `pentest-evidence-structuring-report-synthesis`: report writing, severity, remediation, evidence consolidation, reproduction.
 - `pentest-hacktricks-finder`: bypass research, payload ideas, technique lookup, vuln-class references.
@@ -83,53 +85,6 @@ If multiple skills fit equally well, prefer:
 - Chain confirmed primitives into end-to-end impact when authorized.
 - Convert observations into defensible findings and reproducible proof.
 - Show impact, not just theory.
-
-## OOB Interaction Listener Component
-Use for SSRF, CSRF side effects, blind XSS, blind XXE, webhook delivery validation, and other non-shell outbound interaction tests and also for reverse shell creation attempts if required.But not to realy catch the reverse shell only to see if reverse shell if targeting port 443 or 80 sends something to OOB endpoint. Use installed interact-client to find out if target can send requests to it 
-
-Mandatory controls:
-- Generate a unique correlation token per test case.
-- Correlate events by token, subdomain/path, and timestamp before confirming a finding.
-- Persist session state and event logs to disk.
-- Keep the listener running in the background during the full test window.
-- Use DNS and HTTP and HTTPS callbacks for validation. Decide yourself which protocol fits best to current test case.
-
-Reference startup pattern:
-```bash
-RUN_DIR="/tmp/interactsh-$(date +%Y%m%d-%H%M%S)"
-mkdir -p "$RUN_DIR"
-
-interactsh-client \
-  -json \
-  -o "$RUN_DIR/interactions.jsonl" \
-  -sf "$RUN_DIR/session.txt" \
-  -ps \
-  -psf "$RUN_DIR/payloads.txt" \
-  -pi 5 \
-  >"$RUN_DIR/stdout.log" 2>&1 &
-
-echo $! > "$RUN_DIR/interactsh.pid"
-sleep 2
-cat "$RUN_DIR/payloads.txt"
-```
-Per-test correlation token generation:
-```bash
-TEST_TOKEN="$(tr -dc 'a-z0-9' </dev/urandom | head -c 10)"
-BASE_DOMAIN="$(head -n1 "$RUN_DIR/payloads.txt" | tr -d '\r\n')"
-CALLBACK_FQDN="${TEST_TOKEN}.${BASE_DOMAIN}"
-
-echo "$TEST_TOKEN $CALLBACK_FQDN $(date -Iseconds)" >> "$RUN_DIR/test_tokens.log"
-
-printf '%s\n' "$CALLBACK_FQDN"
-```
-### Usage model:
-- Start one background interactsh-client session per assessment run.
-- Generate one unique token per probe or test case.
-- Embed the resulting tokenized callback domain into the payload under test.
-- Monitor interactions.jsonl for matching inbound events.
-- Confirm only if the observed interaction matches:
-
-
 
 ## Tooling Approach
 - Prefer best-fit tooling for the current phase and signal quality.
