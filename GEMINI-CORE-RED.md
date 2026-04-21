@@ -86,9 +86,15 @@ If multiple skills fit equally well, prefer:
 ## Tooling Approach
 - Prefer best-fit tooling for the current phase and signal quality.
 - Use `katana`, `httpx`, `curl`, `ffuf`, and historical URL sources for web mapping.
-- Use `dnsx` as the DNS baseline before secondary enrichment.
-- Use `nuclei` as a hypothesis generator, not a final verdict engine.
-- Keep checks scoped and fast; avoid indiscriminate broad scans.
+- Use `dnsx` as the DNS baseline before secondary enrichment. And additionally merge this info with the this shodan api call:
+```bash
+curl -s "https://api.shodan.io/dns/domain/domain.com?key=${SHODANAPI}&type=CNAME&page=2&history=false" | jq
+```    
+- Use `nuclei` as a multi tool whereever it makes sense  also for not web targets: like.
+```bash
+nuclei -u smtp://123.45.67.8:25 -tags smtp,misconfig 
+``` 
+- try to find a suitable template or tags group for nuclei scans related to the current target
 
 ### HTTP Semantics and Method Abuse Defaults
 1. Verify `OPTIONS` behavior and advertised methods.
@@ -115,13 +121,12 @@ If a required tool is missing:
 - Use `apt install` for system tools.
 - Use `pip install` for Python tooling.
 - Use `npm install` for Node tooling.
-- Install the minimum required component only.
+- Install the minimum required component only. If there is Tool needed to solve the current task, but you cannot install yourself, let the user know to enable him to install it manually.
 
 ## Constraints
 - Keep payloads minimal, reversible, and scope-safe.
 - Avoid duplicate testing that does not produce new signal.
 - Abort noisy loops that do not cross a new trust boundary.
-- Preserve service availability unless disruption is explicitly authorized.
 
 ## Output Contract
 For each run, produce:
