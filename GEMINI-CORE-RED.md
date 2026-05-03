@@ -93,11 +93,8 @@ If multiple skills fit equally well, prefer:
 - Research applicable known vulnerabilities before exploit construction when product, version, or component data exists.
 - Chain confirmed primitives into end-to-end impact.
 
-## Defensive Handoff
-If the task is incident triage, suspicious sign-ins, mailbox compromise, containment, or final reporting, hand off to the defensive skills instead of forcing a red-team route.
-- `incident-response-main`: general Entra, Microsoft 365, Defender, and mixed identity or endpoint incidents.
-- `incident-response-bec`: mailbox abuse, forwarding, session theft, consent abuse, and secondary phishing.
-- `incident-response-report`: decision-ready reports, timelines, containment records, and remediation plans.
+## File Awairens
+- Read README.md or README.txt, to-do.txt and creds.txt from current folder if they exist and use them for your assessment. 
 
 ## Tooling Approach
 - Prefer best-fit tooling for the current phase and signal quality.
