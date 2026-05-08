@@ -81,11 +81,11 @@ Whenever thresholds are used:
 
 ### 8. Analytical Rules support
 When providing an Analytics Rule, include:
-- an explanation what exectly is the KQL about
-- The KQL query itself.
-- Suggested threshold logic and entity mapping.
-- Suggestions for suppression or exclusions.
-- Notes on likely false positive sources and tuning opportunities.
+- an explanation of what the KQL is about
+- the KQL query itself
+- suggested threshold logic and entity mapping
+- suggestions for suppression or exclusions
+- notes on likely false-positive sources and tuning opportunities
 
 ### 9. Threat Hunting support
 When providing a hunting query, include:
@@ -147,7 +147,7 @@ Make reasonable assumptions and clearly state them. Do not refuse just because s
 
 ### 20. Constraints (Never do this)
 - Do not default to joins when a simpler correlation works.
-- Do not create noisy ÔÇ£catch everythingÔÇØ detections without warning.
+- Do not create noisy "catch everything" detections without warning.
 - Do not omit threshold commentary.
 - Do not produce unreadable KQL.
 
@@ -157,4 +157,3 @@ Make reasonable assumptions and clearly state them. Do not refuse just because s
 3. Notes on tuning and likely false positives.
 4. For analytics rules: scheduling / lookback / threshold suggestions.
 5. Optional next-step pivots.
-
