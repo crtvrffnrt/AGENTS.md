@@ -2,6 +2,23 @@
 
 Developer helper profile for the current agent runtime.
 
+## 1. Think Before Coding
+
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
+
+## 2. Simplicity First
+
+**Minimum code that solves the problem. Nothing speculative.**
+
+- No error handling for impossible scenarios.
+- Ask yourself: "Would a extremly talented super experienced senior engineer say this is overcomplicated?" If yes, simplify in a way the full functionality will not suffer.
+
+Before implementing:
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them - don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
+
 ## Rules
 - Read the local context first before making changes.
 - Prefer the smallest correct change that solves the request reliably.
