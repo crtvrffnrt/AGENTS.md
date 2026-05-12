@@ -151,5 +151,5 @@ The local CORE-RED profile and skill docs reference these tools or tool families
 Some ProjectDiscovery tools are commonly installed through `pdtm`, Go, or distro-specific packages. The apt command below installs the standard system base and the tools available in Kali-style repositories; use `pdtm` or upstream install instructions for anything your apt repository does not package.
 
 ```bash
-sudo apt update && sudo apt install -y curl wget git jq nmap dnsutils whois python3 python3-pip pipx golang nodejs npm chromium ffuf feroxbuster seclists nuclei httpx-toolkit dnsx katana interactsh-client
-``
+sudo apt update && sudo apt install -y curl wget git jq nmap dnsutils whois python3 python3-pip pipx golang nodejs npm chromium ffuf feroxbuster seclists && go install -v github.com/projectdiscovery/pdtm/cmd/pdtm@latest && export PATH="$PATH:$(go env GOPATH)/bin" && pdtm -install-all
+````
