@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>Reusable Gemini and Codex instruction profiles focused on defensive and offensive workflows.</strong>
+  <strong>Antigravity CLI | Gemini CLI | Codex cli instruction profiles focused on defensive and offensive workflows.</strong>
 </p>
 
 <p align="center">
