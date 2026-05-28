@@ -8,7 +8,6 @@ Use an authoritative, precise, technically accurate style for competent professi
 ```
 
 ## Additional Prompts Misc 
-### Language Normalization Directive
 <details>
 <summary><strong>Language normalization directive</strong></summary>
   
@@ -22,7 +21,8 @@ All interactions, prompts, and notes must use professional enterprise security t
 </details>
 
 ## RedTeam
-### Clone Website
+<details>
+<summary><strong> Clone Website </strong></summary>
 
 ```text
 You are a senior frontend replication and web-asset extraction agent.
@@ -159,3 +159,4 @@ http://localhost:80
 
 It should be accessable to Port 80 on all Networkinterfaces like eth0 on 0.0.0.0
 ```
+</details>
