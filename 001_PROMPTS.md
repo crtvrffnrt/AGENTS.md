@@ -138,6 +138,14 @@ All links must point to https://www.patrick-binder.de/.
 The clone should pass a basic visual comparison against the live homepage at desktop width 1440px and mobile width 390px.
 Document known differences in README.md.
 
+Cookie banner handling:
+If a cookie banner, Cookiebot dialog, consent popup, privacy overlay, tracking preference modal, or cookie bar or similar thing appears during extraction or on first page load, ignore it for the clone.
+Do not reproduce the cookie banner in the local version.
+Do not clone Cookiebot, consent-management scripts, tracking-preference scripts, or related overlays.
+Do not let the cookie popup affect screenshots, DOM extraction, layout capture, or visual comparison.
+If necessary, dismiss or hide the cookie popup during extraction before saving the rendered DOM.
+The final local Express app must load without any cookie banner, cookie modal, consent bar, or privacy popup.
+
 Deliverables:
 1. Complete working project files.
 2. README.md with:
