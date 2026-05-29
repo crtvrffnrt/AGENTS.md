@@ -19,6 +19,172 @@ All interactions, prompts, and notes must use professional enterprise security t
 - Preserve technical meaning without changing the intended test behavior.
 ```
 </details>
+## DevSecOps 
+<details>
+<summary><strong>Deep-Dive-Secrurity Code Review</strong></summary>
+  
+```text
+You are acting as a senior application security architect, threat modeler, penetration tester, and secure software reviewer.
+Your task is to perform a comprehensive security assessment of this entire repository.
+
+This is NOT a quick code review. This is a one time Scan, which should reveal all meaningfull vulnerabilities and security related Bugs within the application.
+
+Before identifying vulnerabilities, spend sufficient time understanding the application, its architecture, business logic, authentication model, authorization model, data flows, trust boundaries, dependencies, APIs, frontend, backend, storage layer, and deployment assumptions.
+
+Phase 1 – Application Understanding
+
+1. Analyze the complete codebase.
+2. Determine the purpose of the application.
+3. Identify all major features and user workflows.
+4. Document:
+
+   * Authentication mechanisms
+   * Authorization mechanisms
+   * Session handling
+   * User management
+   * Database access patterns
+   * API design
+   * External integrations
+   * Secrets handling
+   * Storage of sensitive data
+5. Create a detailed threat model before proceeding.
+6. Explicitly identify:
+
+   * Assets
+   * Trust boundaries
+   * Attack surfaces
+   * Privileged operations
+   * Security assumptions
+
+Phase 2 – Security Review
+
+Perform a deep security assessment using modern application security standards and industry best practices, including but not limited to:
+
+* OWASP ASVS
+* OWASP Top 10
+* API Security Top 10
+* Secure Session Management
+* Authentication Best Practices
+* Authorization Best Practices
+* Multi-Tenant Security
+* Secure Secret Management
+* Secure Cloud Application Design
+
+Look for:
+
+* Authentication bypasses
+* Authorization flaws
+* IDOR vulnerabilities
+* Broken access control
+* Privilege escalation paths
+* Cross-tenant or cross-session access risks
+* Session fixation
+* Session hijacking
+* CSRF
+* XSS
+* SSRF
+* SQL Injection
+* Command Injection
+* Template Injection
+* Path Traversal
+* File Upload Issues
+* Insecure Deserialization
+* Open Redirects
+* Sensitive Data Exposure
+* Weak Cryptography
+* Dependency Risks
+* Supply Chain Risks
+* Secret Leakage
+* Logging of Sensitive Data
+* Debug Information Exposure
+* Insecure Defaults
+* Missing Security Controls
+
+ HARD EXCLUSIONS - Automatically exclude findings matching these patterns:
+
+ 1. Denial of Service (DOS) vulnerabilities or resource exhaustion attacks.
+ 2. Secrets or credentials stored on disk if they are otherwise secured.
+ 3. A lack of hardening measures. Code is not expected to implement all security best practices, only flag concrete vulnerabilities.
+ 9. Vulnerabilities related to outdated third-party libraries. These are managed separately and should not be reported here.
+ 10. Memory safety issues such as buffer overflows or use-after-free-vulnerabilities are impossible in rust. Do not report memory safety issues in rust or any other memory safe languages.
+15. Regex injection. Injecting untrusted content into a regex is not a vulnerability.
+16. Regex DOS concerns.
+17. A lack of audit logs is not a vulnerability.
+
+
+Phase 3 – Multi-User SaaS Security Assessment
+
+Assume this application will be publicly hosted on the Internet.
+Assume multiple independent users can authenticate using Google Sign-In.
+Assume users can store API keys, credentials, tokens, or other sensitive secrets within their accounts.
+Perform a dedicated review focused on SaaS isolation and tenant separation.
+
+Specifically verify:
+
+* One user cannot access another user's data.
+* One authenticated user cannot access another user's API keys.
+* One authenticated user cannot enumerate data belonging to other users.
+* API endpoints enforce ownership checks.
+* Database queries enforce tenant boundaries.
+* Object identifiers cannot be manipulated to access foreign records.
+* Frontend code cannot expose secrets belonging to other users.
+* Backend APIs never return secrets belonging to other users.
+* Internal APIs properly validate ownership.
+* Cached responses cannot leak data across users.
+* Logs do not expose secrets.
+* Error messages do not expose secrets.
+* API keys are never exposed to unauthorized users.
+
+Assume a malicious authenticated user is actively attempting to retrieve API keys or secrets belonging to another account.
+
+Actively search for attack paths that could lead to:
+
+* API key disclosure
+* Secret disclosure
+* Cross-account data leakage
+* Cross-tenant access
+* Privilege escalation
+* Unauthorized data access
+
+Phase 4 – Validation
+
+Do not report theoretical issues unless evidence exists.
+
+For each finding:
+
+* Explain the vulnerability.
+* Explain the attack scenario.
+* Explain the impact.
+* Provide evidence from the codebase.
+* Assign severity.
+* Assign confidence level.
+* Explain how to reproduce.
+* Recommend remediation.
+* Provide example secure code when applicable.
+
+Phase 5 – Final Report
+
+Produce:
+
+1. Executive Summary
+2. Architecture Overview
+3. Threat Model
+4. Attack Surface Analysis
+5. critical and high Severity Findings
+6. Medium Severity Findings (Low Severity Findings should be not be reported)
+8. Security Hardening Recommendations
+9. SaaS Multi-Tenant Isolation Assessment
+10. API Key Protection Assessment
+11. Overall Security Maturity Rating
+12. Top 10 Priority Improvements
+
+Be thorough, skeptical, and adversarial. Write your output to Security-Report-UNIXTIMESTAMP.md 
+
+Assume the application will eventually be exposed to the public Internet and handle real customer data and API keys.
+Only Report to Security-Report-UNIXTIMESTAMP.md do not change any other file in current repository.
+```
+</details>
+
 
 ## RedTeam
 <details>
