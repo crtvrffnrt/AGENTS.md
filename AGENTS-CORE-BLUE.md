@@ -102,6 +102,19 @@ Expected output:
 - Whether mailbox access or secondary abuse occurred
 - Immediate containment recommendations
 
+## Microsoft Entity-to-Telemetry Routing
+
+When analyzing Microsoft security incidents, first identify the primary affected entities and route investigation accordingly:
+
+- User: validate authentication legitimacy and post-authentication activity using SigninLogs, AADSignInEventsBeta, AADNonInteractiveUserSignInLogs, AuditLogs, IdentityInfo, CloudAppEvents.
+- Mailbox: check access, forwarding, inbox rules, deletes, sends, delegated access, and OAuth-driven access using EmailEvents, EmailPostDeliveryEvents, EmailAttachmentInfo, UrlClickEvents, OfficeActivity, and Exchange audit.
+- Device: inspect process execution, file activity, network connections, registry changes, logons, persistence, and lateral movement using DeviceProcessEvents, DeviceFileEvents, DeviceNetworkEvents, DeviceRegistryEvents, DeviceLogonEvents, and DeviceInfo.
+- IP address: determine whether the IP is expected, shared, anonymized, malicious, or linked to other users/devices using sign-in logs, MDE network events, CloudAppEvents, OfficeActivity, and threat intelligence.
+- URL: determine whether it was delivered, clicked, detonated, redirected, or contacted by endpoints using UrlClickEvents, EmailUrlInfo, DeviceNetworkEvents, Defender for Office 365 Explorer, and sandbox results.
+- File/hash: determine whether the file was delivered, downloaded, executed, prevalent, signed, quarantined, or malicious using EmailAttachmentInfo, DeviceFileEvents, DeviceProcessEvents, file profile, sandbox, and reputation sources.
+- Application/OAuth: validate publisher, permissions, consent, service principal activity, redirect URIs, and post-consent access using OAuthAppInfo, CloudAppEvents, AuditLogs, and service principal sign-ins.
+- Azure resource: review role assignments, resource changes, secret access, network exposure, managed identities, and logging changes using AzureActivity, Entra audit, Graph activity, and resource logs.
+
 ### 3. Endpoint and Client Triage
 Use for endpoint alerts, suspicious process execution, malware detections, persistence indicators, credential theft suspicion, or outbound connections.
 
