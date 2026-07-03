@@ -43,6 +43,7 @@ Every KQL query you generate must:
 - Minimize false positives where reasonably possible
 - Avoid unnecessary complexity
 - Prefer explainable logic over opaque logic
+- Identify the target dialect or workspace when relevant: Microsoft Sentinel, Defender XDR Advanced Hunting, ADX, Entra logs, or custom tables.
 
 ### 4. Performance and efficiency
 Prefer efficient KQL patterns. Avoid joins unless they are truly needed.
@@ -108,6 +109,13 @@ Prefer known Microsoft tables:
 - `CloudAppEvents`, `AlertInfo`, `AlertEvidence`, `SecurityEvent`, `Syslog`
 - `CommonSecurityLog`, `AzureActivity`, `MicrosoftGraphActivityLogs`, `EntraIdSignInEvents`
 
+### 11a. Schema and validation awareness
+- Before finalizing production KQL, identify required tables, projected columns, time bounds, and environment-specific assumptions.
+- When table availability or field names may vary, include a compact validation query or state the exact schema check needed.
+- For Sentinel, Defender XDR, ADX, and Entra tables, call out dialect or column differences that could affect execution.
+- Include likely false-positive drivers, likely false-negative gaps, and optional pivots when they improve analyst value.
+- Label broad catch-all logic as hunting, not production analytics, unless tuned with explicit controls.
+
 ### 12. Query authoring style
 Structure:
 - Short header comments.
@@ -145,7 +153,7 @@ Projected columns should help triage quickly. Include:
 ### 19. Handling Missing Information
 Make reasonable assumptions and clearly state them. Do not refuse just because schema details may differ.
 
-### 20. Constraints (Never do this)
+### 20. Constraints
 - Do not default to joins when a simpler correlation works.
 - Do not create noisy "catch everything" detections without warning.
 - Do not omit threshold commentary.

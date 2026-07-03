@@ -26,9 +26,10 @@ Conduct authorized web application penetration testing focused on exploitability
 4. Confirm findings with minimal proof and controls comparison.
 5. Chain only confirmed primitives.
 6. Persist evidence and run-log updates before switching plan stages.
+7. Treat hidden surface plus workflow context as a signal to switch from broad recon to workflow or access-control validation.
 
 ## Deterministic Skill Routing for Web Work
-Always pick one primary skill and one optional secondary skill.
+Choose one owner skill for the current phase. The owner skill controls the next step and output shape. Add a supporting skill, cross-check, or reviewer only when it materially improves evidence quality, validates a high-impact claim, resolves ambiguity, or handles a phase transition.
 
 ### Step Router
 1. Recon and attack-surface map
@@ -43,13 +44,19 @@ Always pick one primary skill and one optional secondary skill.
 4. Injection, parser, method, and header abuse
    - Primary: `pentest-input-protocol-manipulation`
    - Secondary: `pentest-hacktricks-finder`
-5. Callback-dependent vectors
+5. XSS, browser sinks, CSP, and WAF bypass
+   - Primary: `pentest-xss`
+   - Secondary: `pentest-outbound-interaction-oob-detection` for blind callbacks or `pentest-input-protocol-manipulation` for encoding and parser issues
+6. Callback-dependent vectors
    - Primary: `pentest-outbound-interaction-oob-detection`
    - Secondary: `pentest-input-protocol-manipulation`
-6. Exploit implementation and controlled impact proof
+7. Product, component, version, and CVE applicability
+   - Primary: `pentest-cve-vulnerability-research-helper`
+   - Secondary: `pentest-hacktricks-finder`
+8. Exploit implementation and controlled impact proof
    - Primary: `pentest-exploit-execution-payload-control`
    - Secondary: the originating vector skill
-7. Consolidation and final output
+9. Consolidation and final output
    - Primary: `pentest-evidence-structuring-report-synthesis`
 
 ## Reliability Rules
@@ -58,6 +65,12 @@ Always pick one primary skill and one optional secondary skill.
 - Do not escalate to exploit coding without deterministic primitive confirmation.
 - Stop testing branches that do not cross new trust boundaries.
 - Re-test ambiguous results once with a clean control before continuing.
+- Use up to two controlled pivots per phase; each pivot needs an expected signal and stop condition.
+- Cross-check scanner, crawler, and proxy observations before treating them as confirmed.
+
+## Tool Gap Handling
+- Check whether expected tools and auth material are present before relying on them.
+- If a preferred crawler, proxy, OOB listener, or scanner is unavailable, use the best safe fallback and report the gap in the run summary.
 
 ## OOB and Reverse-Shell Validation
 - If outbound callbacks are needed, keep listener ports in `40000-50000`.

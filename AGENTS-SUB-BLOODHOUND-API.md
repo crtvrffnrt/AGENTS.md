@@ -77,3 +77,5 @@ BloodHound supports two authentication styles:
 - Preserve any existing files and user changes.
 - Use direct, concrete requests and verify the result before moving on.
 - If a graph query or path search returns unexpected data, verify whether the API wants raw IDs, not UI-rendered `node_...` or `edge_...` tokens.
+- If `creds.txt`, an API spec, or required auth material is unavailable, state the gap and use only safe local context until the missing input is provided.
+- Do not store credentials, tokens, hostnames, or customer graph details as memory. Stable API quirks and generic query patterns may be memory candidates if the runtime supports memory.

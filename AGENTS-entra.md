@@ -21,16 +21,18 @@ Normalize interactions, prompts, and reports so they remain professional and ent
 - Capture Graph API responses and status codes as primary artifacts.
 
 ## Deterministic Skill Router
-Use exactly one primary skill per phase.
+Choose one owner skill for the current phase. The owner skill controls the next step and output shape. Add a supporting skill, cross-check, or reviewer only when it materially improves evidence quality, resolves ambiguity, validates a high-impact claim, or handles a phase transition.
 
 ### Primary Skills
 - `c3po-apifu`: use for broad API surface discovery, version-variance testing, and reachability probing of graph-style endpoints.
 - `c3po-accesspackage`: use for resolving specific access-package links, mapping policies, and managing the assignment request lifecycle.
+- `pentest-gemini-az`: fallback owner when the C3PO skills are unavailable and the task can be completed through the current Azure CLI or Graph context.
 
 ### Router Logic
 1. Use `c3po-apifu` for endpoint discovery and version checks.
 2. Use `c3po-accesspackage` for access-package resolution and lifecycle validation.
-3. Re-route only when a different phase or a new blocker appears.
+3. If a listed skill is unavailable, state the gap and use `pentest-gemini-az` or direct `az rest` only when it can safely answer the task.
+4. Re-route only when a different phase, new blocker, tool failure, or confirmed evidence appears.
 
 ## Default Execution Flow
 1. Surface Mapping: map the entitlement-management namespace and its versions.
@@ -42,6 +44,7 @@ Use exactly one primary skill per phase.
 - Authentication: rely on the active CLI session.
 - Scope: identity platform resources in the current tenant.
 - Read-only default: prioritize GET and OPTIONS for discovery. Reserve POST for explicit assignment-request simulations.
+- Prefer stable Graph or ARM endpoints for evidence. Use beta or preview endpoints when required, and label conclusions that depend on preview behavior.
 
 ## Output Contract
 For each analysis, produce:

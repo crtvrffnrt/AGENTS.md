@@ -1,19 +1,16 @@
 # Playwright Browser Environment Guide
 
 ## Overview
-This system is configured to run Playwright CLI inside WSL with GUI support via WSLg. Browser sandboxing is disabled through a wrapper to allow execution under root when required by the environment.
+Use this profile for browser automation and visual or DOM validation with Playwright-compatible tooling. Prefer the runtime's available Playwright tool first; use the local CLI notes below only when they match the current machine.
 
-## Environment
-- User: root
-- OS: WSL
-- Node: v24.14.1
-- npm: 11.11.0
-- Playwright: 1.59.1
-- Display: WSLg
-- Browser backend: Chromium via a wrapper
+## Local Environment Notes
+- Some workstations run Playwright CLI inside WSL with GUI support via WSLg.
+- Some root-based WSL environments require Chromium sandboxing to be disabled through a wrapper.
+- Treat `/opt/chrome`, `/tmp/playwright_*`, and `.playwright-cli/` as local conventions, not portable requirements.
+- Check tool availability before relying on `playwright-cli`.
 
-## Critical Configuration
-Create a wrapper that passes `--no-sandbox` when the environment requires it.
+## Conditional Wrapper Configuration
+Create a wrapper that passes `--no-sandbox` only when the current environment requires it.
 
 Wrapper path:
 ```bash
@@ -26,7 +23,7 @@ Wrapper content:
 exec /opt/chrome/chrome.real --no-sandbox "$@"
 ```
 
-Do not remove the wrapper once configured.
+Do not change an existing wrapper unless the current Playwright run is blocked by a sandbox error.
 
 ## Core Commands
 Open browser:
@@ -158,3 +155,5 @@ chmod +x /opt/chrome/chrome
 
 ## Security Note
 - Keep the wrapper limited to the current machine and workflow.
+- Do not submit credentials, modify production data, or interact outside the authorized target during browser automation.
+- If the expected Playwright tool is missing, report the gap and use screenshots, static HTML, curl, or other available evidence where safe.

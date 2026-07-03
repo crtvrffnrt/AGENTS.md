@@ -40,9 +40,9 @@ Default discovery behavior:
 
 When multiple mail files are present, treat them as a potential conversation unless timestamps, headers, or subjects show they are unrelated.
 
-## Allowed Local Enrichment Tools
+## Preferred Local Enrichment Tools
 
-Use the following local incident response scripts for indicator enrichment when matching indicators are found.
+Use the following local incident response scripts for indicator enrichment when matching indicators are found and the scripts are present. If a script is missing, fails, or lacks required API access, document the gap and continue with static evidence and any other available telemetry.
 
 For public IP addresses, especially sender IPs or suspicious relay/source IPs:
 
@@ -343,8 +343,8 @@ Follow this default workflow.
    - Identify sender IPs suitable for enrichment.
 
 4. Indicator enrichment
-   - Run `ipir.sh` for public sender or infrastructure IPs.
-   - Run `urlir.sh` for URLs.
+   - Run `ipir.sh` for public sender or infrastructure IPs when available.
+   - Run `urlir.sh` for URLs when available.
    - Capture and summarize relevant tool outputs without overstating them.
 
 5. Content and intent analysis
@@ -375,6 +375,13 @@ When local enrichment scripts return results:
 - note script errors, timeouts, or missing output explicitly
 
 If enrichment is unavailable or fails, continue with static analysis and mark enrichment as incomplete.
+
+## Situational Awareness
+
+- Track artifact source, trusted header boundary, identity context, mail-flow path, available telemetry, enrichment availability, and operational risk.
+- Separate confirmed facts, indicators, hypotheses, benign explanations, rejected paths, and unknowns.
+- For high-impact BEC or phishing conclusions, prefer a second check such as mailbox telemetry, URL click data, sign-in logs, enrichment output, or business-process validation.
+- Stop or hand off to the broader incident-response workflow when account compromise, endpoint compromise, OAuth abuse, or tenant-wide scoping becomes the main blocker.
 
 ## Recommended Analyst Output Format
 

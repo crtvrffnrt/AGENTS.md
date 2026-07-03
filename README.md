@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>Antigravity CLI | Gemini CLI | Codex cli instruction profiles focused on defensive and offensive workflows.</strong>
+  <strong>Antigravity CLI | Gemini CLI | Codex CLI instruction profiles focused on defensive and offensive workflows.</strong>
 </p>
 
 <p align="center">
@@ -49,6 +49,16 @@ The recommended pattern is:
 | `AGENTS-KQL.md` | KQL and Microsoft security query work | Project |
 | `AGENTS-API.md` | API-focused work | Project |
 | `AGENTS-entra.md` | Microsoft Entra-focused work | Project |
+| `AGENTS-SUB-MAIL-ANALYSIS.md` | Mail artifact, phishing, spam, and BEC triage | Project |
+| `AGENTS-SUB-BLOODHOUND-API.md` | BloodHound Enterprise API work | Project |
+| `AGENTS-SUB-BLUE.md` | Lightweight defensive sub-agent overlay | Project |
+| `AGENTS-Aisupercycle.md` | Market and technology intelligence workflow | Project |
+
+## Instruction Hierarchy
+
+Use the runtime's system and developer instructions first, then the global core profile, then any project-local profile, then the selected skill. User scope and explicit constraints remain authoritative for the current task.
+
+Profiles choose one owner skill per phase. Add a supporting skill, cross-check, or reviewer only when it materially improves evidence quality, validates a high-impact claim, resolves ambiguity, or handles a phase transition.
 
 ## How To Use
 
@@ -59,23 +69,23 @@ The core profiles are best installed globally. Sub profiles are best installed p
 Use a global profile when you want every new assistant session to start from the same baseline.
 
 ```bash
-mkdir -p /root/.gemini ~/.codex
+mkdir -p "$HOME/.gemini" "$HOME/.codex"
 
-wget -O /root/.gemini/GEMINI.md \
+wget -O "$HOME/.gemini/GEMINI.md" \
   https://raw.githubusercontent.com/crtvrffnrt/AGENTS.md/main/AGENTS-CORE-BLUE.md
 
-cp /root/.gemini/GEMINI.md ~/.codex/AGENTS.md
+cp "$HOME/.gemini/GEMINI.md" "$HOME/.codex/AGENTS.md"
 ```
 
 For a red team baseline, switch the source file:
 
 ```bash
-mkdir -p /root/.gemini ~/.codex
+mkdir -p "$HOME/.gemini" "$HOME/.codex"
 
-wget -O /root/.gemini/GEMINI.md \
+wget -O "$HOME/.gemini/GEMINI.md" \
   https://raw.githubusercontent.com/crtvrffnrt/AGENTS.md/main/AGENTS-CORE-RED.md
 
-cp /root/.gemini/GEMINI.md ~/.codex/AGENTS.md
+cp "$HOME/.gemini/GEMINI.md" "$HOME/.codex/AGENTS.md"
 ```
 
 ### Project Profile
@@ -95,8 +105,8 @@ That writes the same profile to both `GEMINI.md` and `AGENTS.md`, which keeps Ge
 These examples keep the same pattern as the commands above: core profiles are global, sub profiles are per project. Add only the aliases you actually use to your shell config.
 
 ```bash
-alias initcoreblue='mkdir -p /root/.gemini ~/.codex && wget -O /root/.gemini/GEMINI.md https://raw.githubusercontent.com/crtvrffnrt/AGENTS.md/main/AGENTS-CORE-BLUE.md && cp /root/.gemini/GEMINI.md ~/.codex/AGENTS.md'
-alias initcorered='mkdir -p /root/.gemini ~/.codex && wget -O /root/.gemini/GEMINI.md https://raw.githubusercontent.com/crtvrffnrt/AGENTS.md/main/AGENTS-CORE-RED.md && cp /root/.gemini/GEMINI.md ~/.codex/AGENTS.md'
+alias initcoreblue='mkdir -p "$HOME/.gemini" "$HOME/.codex" && wget -O "$HOME/.gemini/GEMINI.md" https://raw.githubusercontent.com/crtvrffnrt/AGENTS.md/main/AGENTS-CORE-BLUE.md && cp "$HOME/.gemini/GEMINI.md" "$HOME/.codex/AGENTS.md"'
+alias initcorered='mkdir -p "$HOME/.gemini" "$HOME/.codex" && wget -O "$HOME/.gemini/GEMINI.md" https://raw.githubusercontent.com/crtvrffnrt/AGENTS.md/main/AGENTS-CORE-RED.md && cp "$HOME/.gemini/GEMINI.md" "$HOME/.codex/AGENTS.md"'
 
 alias initbug='wget -qO- https://raw.githubusercontent.com/crtvrffnrt/AGENTS.md/main/AGENTS-SUB-BUG.md | tee GEMINI.md AGENTS.md > /dev/null'
 alias inithtb='wget -qO- https://raw.githubusercontent.com/crtvrffnrt/AGENTS.md/main/AGENTS-SUB-HTB.md | tee GEMINI.md AGENTS.md > /dev/null'
@@ -148,8 +158,4 @@ The local CORE-RED profile and skill docs reference these tools or tool families
 - OOB validation: `interactsh-client`
 - CVE research: `vulnx` with `PDCP_API_KEY` when available
 
-Some ProjectDiscovery tools are commonly installed through `pdtm`, Go, or distro-specific packages. The apt command below installs the standard system base and the tools available in Kali-style repositories; use `pdtm` or upstream install instructions for anything your apt repository does not package.
-
-```bash
-sudo apt update && sudo apt install -y curl wget git jq nmap dnsutils whois python3 python3-pip pipx golang nodejs npm chromium ffuf feroxbuster seclists && go install -v github.com/projectdiscovery/pdtm/cmd/pdtm@latest && export PATH="$PATH:$(go env GOPATH)/bin" && pdtm -install-all
-````
+Some ProjectDiscovery tools are commonly installed through `pdtm`, Go, or distro-specific packages. Install only the tools needed for the active phase and keep operational installation explicit.

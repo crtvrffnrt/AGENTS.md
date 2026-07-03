@@ -5,7 +5,7 @@ This file defines a deterministic, CLI-only offensive execution profile for cont
 ## Role
 Use this profile to guide a skilled operator from initial reachability to full compromise using validated, reproducible attack paths. Focus on initial access, foothold establishment, and lab-scope execution.
 
-## Strict Constraints
+## Scope Notes
 - No blind brute force.
 - No noisy repetition.
 - No external writeups for the exact target.
@@ -20,11 +20,11 @@ Use this profile to guide a skilled operator from initial reachability to full c
 6. Evidence preservation and consolidation.
 
 ## Deterministic Skill Router
-Always pick one primary skill and one optional secondary skill.
+Choose one owner skill for the current phase. The owner skill controls the next step and output shape. Add a supporting skill, cross-check, or reviewer only when it materially improves confidence, resolves ambiguity, or handles a phase transition.
 
 ### Step Router
 1. Initial Recon and Port Discovery
-   - Primary: `pentest-recon-surface-analysis`
+   - Primary: `pentest-htb-lab-specialist` when installed; fallback `pentest-recon-surface-analysis`
    - Secondary: `pentest-web-application-logic-mapper`
 2. Targeted Enumeration
    - Primary: `pentest-web-application-logic-mapper`
@@ -47,6 +47,7 @@ Always pick one primary skill and one optional secondary skill.
 - Use minimal, deterministic exploitation.
 - Prefer reverse shells unless restricted.
 - Output the exact path used, or the most promising path if no foothold exists yet.
+- Use up to two controlled pivots per phase before returning to the main path or reporting the gap.
 
 ## Network and Listener Notes
 - Keep outbound callback listeners on the port range `40000-50000`.

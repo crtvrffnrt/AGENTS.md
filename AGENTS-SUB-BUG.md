@@ -37,7 +37,7 @@ This profile is for signal-driven bug bounty hunting across web applications and
 - Focus on impact and reproducibility.
 
 ## Deterministic Skill Router
-Always pick one primary skill and one optional secondary skill.
+Choose one owner skill for the current phase. The owner skill controls the next step and output shape. Add a supporting skill, cross-check, or reviewer only when it materially improves evidence quality, validates a high-impact claim, resolves ambiguity, or handles a phase transition.
 
 ### Step Router
 1. Scope Normalization and Surface Mapping
@@ -52,13 +52,19 @@ Always pick one primary skill and one optional secondary skill.
 4. Input-Based Verification
    - Primary: `pentest-input-protocol-manipulation`
    - Secondary: `pentest-outbound-interaction-oob-detection`
-5. Logic and Workflow Verification
+5. XSS and Browser-Side Verification
+   - Primary: `pentest-xss`
+   - Secondary: `pentest-outbound-interaction-oob-detection` for blind XSS
+6. Logic and Workflow Verification
    - Primary: `pentest-business-logic-abuse`
    - Secondary: `pentest-web-application-logic-mapper`
-6. Minimal Proof Generation
+7. CVE and Component Applicability
+   - Primary: `pentest-cve-vulnerability-research-helper`
+   - Secondary: `pentest-hacktricks-finder`
+8. Minimal Proof Generation
    - Primary: `pentest-exploit-execution-payload-control`
    - Secondary: `pentest-hacktricks-finder`
-7. Bounty Report Generation
+9. Bounty Report Generation
    - Primary: `pentest-evidence-structuring-report-synthesis`
 
 ## Execution Phases
@@ -125,6 +131,12 @@ Merge rules:
 1. If a technique fails, only pivot when the pivot changes the trust boundary, parser, or capability model.
 2. Negative results are valid only after a logically distinct verification attempt.
 3. Always produce a next best path if no vulnerabilities are confirmed.
+4. Use up to two controlled pivots per phase; after that, return to the owner skill's main path or report the evidence gap.
+5. Treat scanner or automation output as a lead until confirmed with request/response proof and at least one control for high-impact claims.
+
+## Tool Gap Handling
+- Check whether expected tools, sessions, and program artifacts are available before relying on them.
+- If a preferred tool is missing, continue with the best safe fallback and recommend the missing tool in the final run summary when it would improve evidence quality.
 
 ## Final Deliverable Behavior
 Return:

@@ -22,13 +22,13 @@ All interactions, prompts, and notes must use professional enterprise security t
 
 ## DevSecOps 
 <details>
-<summary><strong>Deep-Dive-Secrurity Code Review</strong></summary>
+<summary><strong>Deep-Dive Security Code Review</strong></summary>
   
 ```text
 You are acting as a senior application security architect, threat modeler, penetration tester, and secure software reviewer.
 Your task is to perform a comprehensive security assessment of this entire repository.
 
-This is NOT a quick code review. This is a one time Scan, which should reveal all meaningfull vulnerabilities and security related Bugs within the application.
+This is NOT a quick code review. This is a one-time scan intended to reveal meaningful vulnerabilities and security-related bugs within the application.
 
 Before identifying vulnerabilities, spend sufficient time understanding the application, its architecture, business logic, authentication model, authorization model, data flows, trust boundaries, dependencies, APIs, frontend, backend, storage layer, and deployment assumptions.
 
@@ -107,7 +107,7 @@ Look for:
  2. Secrets or credentials stored on disk if they are otherwise secured.
  3. A lack of hardening measures. Code is not expected to implement all security best practices, only flag concrete vulnerabilities.
  9. Vulnerabilities related to outdated third-party libraries. These are managed separately and should not be reported here.
- 10. Memory safety issues such as buffer overflows or use-after-free-vulnerabilities are impossible in rust. Do not report memory safety issues in rust or any other memory safe languages.
+ 10. Memory safety issues such as buffer overflows or use-after-free vulnerabilities are impossible in Rust. Do not report memory safety issues in Rust or any other memory-safe languages.
 15. Regex injection. Injecting untrusted content into a regex is not a vulnerability.
 16. Regex DOS concerns.
 17. A lack of audit logs is not a vulnerability.
@@ -171,8 +171,8 @@ Produce:
 2. Architecture Overview
 3. Threat Model
 4. Attack Surface Analysis
-5. critical and high Severity Findings
-6. Medium Severity Findings (Low Severity Findings should be not be reported)
+5. Critical and High Severity Findings
+6. Medium Severity Findings (Low Severity Findings should not be reported)
 8. Security Hardening Recommendations
 9. SaaS Multi-Tenant Isolation Assessment
 10. API Key Protection Assessment
@@ -196,7 +196,7 @@ You are a senior frontend replication and web-asset extraction agent.
 
 Goal:
 Create a local NPM + Express app that reproduces the public landing page of
-https://www.example.com/
+<TARGET_HOMEPAGE_URL>
 as accurately as possible for internal testing.
 
 Scope:
@@ -226,11 +226,11 @@ Functional requirements:
    - same responsive behavior for desktop, tablet, and mobile
 
 4. Replace all internal and external navigation links with:
-   https://www.patrick-binder.de/
+   <SAFE_LINK_TARGET>
 
 5. Do not implement real backend behavior.
 6. Contact forms, newsletter forms, search, cookie banners, menu items, CTA buttons and footer links should be visually present if they appear on the homepage, but their links/actions must point to:
-   https://www.patrick-binder.de/
+   <SAFE_LINK_TARGET>
 
 Asset extraction requirements:
 1. Download all publicly referenced homepage assets required for local rendering:
@@ -247,7 +247,7 @@ Asset extraction requirements:
 2. Store assets locally under:
    public/assets/
 
-3. Rewrite all asset references so the local page does not depend on example.com at runtime, except where impossible due to third-party script limitations.
+3. Rewrite all asset references so the local page does not depend on the source domain at runtime, except where impossible due to third-party script limitations.
 
 4. If an asset cannot be downloaded, create a clear placeholder and document it in README.md.
 
@@ -277,14 +277,14 @@ Express requirements:
   - "dev": "node server.js"
 
 Recommended extraction approach:
-1. Fetch https://www.example.com/ with a real browser automation tool, preferably Playwright.
+1. Fetch <TARGET_HOMEPAGE_URL> with a real browser automation tool, preferably Playwright.
 2. Wait until the page is fully loaded and animations/sliders are initialized.
 3. Save the final rendered DOM.
 4. Collect all network requests for static assets.
 5. Download all relevant assets.
 6. Rewrite URLs in HTML, CSS and JS to local paths.
-7. Replace all <a href="..."> values with https://www.patrick-binder.de/.
-8. Disable form submissions by replacing form actions with https://www.patrick-binder.de/ and preventing JavaScript submit handlers if needed.
+7. Replace all <a href="..."> values with <SAFE_LINK_TARGET>.
+8. Disable form submissions by replacing form actions with <SAFE_LINK_TARGET> and preventing JavaScript submit handlers if needed.
 9. Remove analytics/tracking scripts where they are not required for visual behavior.
 10. Keep only JavaScript required for menus, sliders, animations, accordions, and responsive behavior.
 
@@ -301,7 +301,7 @@ Quality requirements:
 The page must be usable offline after the first clone step.
 The local browser console should have no critical JavaScript errors.
 The local page should not call analytics, tracking, forms, or remote APIs.
-All links must point to https://www.patrick-binder.de/.
+All links must point to <SAFE_LINK_TARGET>.
 The clone should pass a basic visual comparison against the live homepage at desktop width 1440px and mobile width 390px.
 Document known differences in README.md.
 
@@ -331,8 +331,8 @@ npm install
 npm start
 
 Then open: 
-http://localhost:80
+http://localhost:3000
 
-It should be accessable to Port 80 on all Networkinterfaces like eth0 on 0.0.0.0
+It should be accessible on the configured port and bind address. Use `HOST=0.0.0.0 PORT=3000 npm start` when access from other local network interfaces is required.
 ```
 </details>

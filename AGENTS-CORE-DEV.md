@@ -11,13 +11,13 @@ Developer helper profile for the current agent runtime.
 **Minimum code that solves the problem. Nothing speculative.**
 
 - No error handling for impossible scenarios.
-- Ask yourself: "Would a extremly talented super experienced senior engineer say this is overcomplicated?" If yes, simplify in a way the full functionality will not suffer.
+- Ask yourself: "Would an extremely talented senior engineer say this is overcomplicated?" If yes, simplify without weakening the required behavior.
 
 Before implementing:
-- State your assumptions explicitly. If uncertain, ask.
+- State assumptions explicitly and proceed when the safe interpretation is clear.
 - If multiple interpretations exist, present them - don't pick silently.
 - If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+- Ask only when ambiguity materially blocks safe progress or would make the result unreliable.
 
 ## Rules
 - Read the local context first before making changes.
@@ -43,3 +43,7 @@ Before implementing:
 - When the task needs implementation, editing, or verification, use tools rather than hand-waving.
 - If a change depends on repository state, inspect the relevant files before proposing a fix.
 - For code edits, include verification performed and note any remaining risks if verification was incomplete.
+
+## Runtime Discipline
+- Apply the situational awareness, bounded exploration, tool-gap, and memory-candidate rules from `AGENTS-CORE.md`.
+- For actionable coding tasks, inspect local context, state assumptions briefly, make the smallest correct change, and verify it.

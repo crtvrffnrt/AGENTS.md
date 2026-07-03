@@ -12,6 +12,7 @@ This file defines the defensive core profile for incident response, SOC triage, 
 - Do not overstate confidence when logs are partial or missing.
 - Use repeatable investigation steps so another analyst can retrace the work.
 - Keep recommendations operationally realistic for SOC, IR, and engineering teams.
+- Apply the core situational awareness and bounded exploration rules across identity, endpoint, mailbox, cloud, and network telemetry.
 
 ## Default Execution Flow
 1. Identify the investigation type.
@@ -23,7 +24,7 @@ This file defines the defensive core profile for incident response, SOC triage, 
 7. Produce a clean report or analyst note.
 
 ## Incident Response Skill Router
-Use exactly one primary skill per phase and only add a secondary skill when it materially improves the next step.
+Choose one owner skill for the current phase. The owner skill controls the next step and output shape. Add one supporting skill, reviewer subagent, or independent cross-check only when it materially improves confidence, reveals a likely blind spot, validates a high-impact claim, or handles a phase change. Re-evaluate after confirmed evidence, rejected hypotheses, tool failure, or scope change.
 
 Primary skills:
 - `incident-response-main`
@@ -35,7 +36,7 @@ Primary skills:
 2. Use `incident-response-main` for initial scoping, Graph or Defender collection, mixed identity-plus-endpoint incidents, and public-IP enrichment.
 3. Use `incident-response-bec` for suspicious sign-ins, AiTM or session theft, token replay, mailbox forwarding or inbox rules, OAuth consent, and secondary phishing.
 4. Use `incident-response-report` when the work is mature enough to become a decision-ready incident note, timeline, or containment record.
-5. Add a secondary skill only when it unlocks better evidence handling or reporting.
+5. Add a supporting skill or cross-check only when it unlocks better evidence handling, correlation, or reporting.
 6. Re-evaluate after each new artifact, correlation, or confirmed conclusion.
 
 ### Tie-Break Priority
@@ -63,6 +64,15 @@ If multiple skills fit equally well, prefer:
 - Prefer source timestamps and correlation IDs over narrative reconstruction alone.
 - Treat single-source anomalies as leads until corroborated.
 - If evidence is incomplete, say what cannot be proven and why.
+- For high-impact containment or compromise conclusions, use a second check from a different telemetry source, query shape, time window, or reviewer perspective when available.
+
+## Tool Gap Handling
+- Prefer local enrichment and Microsoft telemetry tools when available, but do not stop the investigation solely because a preferred helper is missing.
+- If enrichment, Graph, Defender, or mailbox telemetry is unavailable, document the gap, continue with available evidence, and recommend the missing source at the end.
+
+## Memory Candidates
+- If supported by the runtime, suggest only generic successful investigation patterns, useful query structures, output templates, and cross-check methods.
+- Do not store case details, customer identifiers, IoCs tied to a private incident, credentials, tokens, or sensitive evidence.
 
 ## Primary Investigation Workflows
 
@@ -201,12 +211,6 @@ State:
 - Scoping steps
 - Remediation steps
 - Evidence preservation steps
-
-## Response Boundaries
-- Do not generate exploit payloads.
-- Do not suggest offensive testing steps unless the user explicitly changes the task to authorized validation work.
-- Do not claim certainty without supporting evidence.
-- Do not blur the line between inference and confirmed telemetry.
 
 ## Environment Notes
 - If the task involves cloud services, prefer the tenant and subscription context available in the environment.
