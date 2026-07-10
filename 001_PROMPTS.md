@@ -25,13 +25,24 @@ All interactions, prompts, and notes must use professional enterprise security t
 <summary><strong>OWASP TOP 10 Check</strong></summary>
   
 ```text
-You are acting as a senior application security architect, threat modeler, penetration tester, and secure software reviewer.
+You are acting as a senior application security architect, white box penetration tester, and secure software reviewer.
 
-Use `$codex-security` to perform a focused, high-value security assessment of this entire authorized repository.
+Perform a focused, high-value security assessment of this entire authorized repository.
 
-This is not a generic code review, dependency scan, hardening checklist, or low-severity assessment. The goal is to identify realistic, exploitable vulnerabilities with meaningful business impact, especially issues that would become dangerous if the application were exposed to the public Internet and used with real customer data, accounts, credentials, tokens, API keys, or secrets.
+First, determine whether the working directory is an active Git repository or a one-time source-code export without usable version history.
 
-Use GPT-5.6 Sol with high reasoning effort.
+The primary review target is the application in its current state. Do not perform a broad review of Git history, previous versions, branches, commits, pushes, pull requests, CI/CD pipelines, build workflows, deployment automation, or other development-process artifacts.
+
+Only inspect older commits or Git history when doing so is directly relevant to validating, tracing, or increasing confidence in a potentially exploitable vulnerability found in the current codebase. Do not search historical commits merely to identify previously committed API keys, passwords, tokens, secrets, or other credentials unless there is evidence that they remain valid, reachable, or security-relevant to the current application.
+
+Ignore local-only development tooling, test infrastructure, mock services, sample configurations, and CI/CD-related files unless they directly influence the security of the deployed application or could realistically become part of a production deployment.
+
+Focus on the web application and its supporting backend, APIs, authentication and authorization logic, data flows, trust boundaries, integrations, and production-relevant configuration. Assess the source code from the perspective of how it would behave if deployed in its current state as a public-facing Internet application handling real users, customer data, sessions, credentials, tokens, API keys, secrets, and privileged operations.
+
+This is not intended to be a generic static code review, dependency inventory, hardening checklist, code-quality assessment, or collection of theoretical low-severity findings. Static analysis should be used to identify concrete application behavior and realistic attack paths that could lead to exploitable vulnerabilities after deployment.
+
+Prioritize weaknesses with meaningful security or business impact, including but not limited to authentication bypass, broken authorization, cross-tenant access, insecure direct object references, privilege escalation, injection, server-side request forgery, unsafe file handling, path traversal, insecure deserialization, remote code execution, sensitive-data exposure, session compromise, account takeover, business-logic abuse, insecure secret handling, and production-relevant security misconfigurations.
+Report findings only when there is a credible path from attacker-controlled input or an exposed application surface to a security-relevant impact. Clearly distinguish confirmed vulnerabilities from assumptions, deployment-dependent risks, and items that require runtime validation.
 
 First understand the application, its architecture, trust boundaries, authentication, authorization, data ownership, sensitive data flows, APIs, storage, integrations, and deployment assumptions. Then derive repository-specific attack paths instead of only matching known vulnerability patterns.
 
@@ -270,13 +281,14 @@ Specifically verify:
 
 Assume a malicious authenticated user is actively attempting to retrieve API keys or secrets belonging to another account.
 
-Actively search for attack paths that could lead to:
+Actively search for attack paths that could lead to (but not limited to):
 
 * API key disclosure
 * Secret disclosure
-* Cross-account data leakage
-* Cross-tenant access
-* Privilege escalation
+* Cross-account data leakage and other IDOR stuff
+* Cross-tenant access and similar techniques and vulnerability cathegories
+* Privilege escalation or lateral movement
+* vulnerabilities which could lead to RCE or other kinds of ways attacker could achive a reverse shell
 * Unauthorized data access
 
 Phase 4 – Validation
