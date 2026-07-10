@@ -22,6 +22,138 @@ All interactions, prompts, and notes must use professional enterprise security t
 
 ## DevSecOps 
 <details>
+<summary><strong>OWASP TOP 10 Check</strong></summary>
+  
+```text
+You are acting as a senior application security architect, threat modeler, penetration tester, and secure software reviewer.
+
+Use `$codex-security` to perform a focused, high-value security assessment of this entire authorized repository.
+
+This is not a generic code review, dependency scan, hardening checklist, or low-severity assessment. The goal is to identify realistic, exploitable vulnerabilities with meaningful business impact, especially issues that would become dangerous if the application were exposed to the public Internet and used with real customer data, accounts, credentials, tokens, API keys, or secrets.
+
+Use GPT-5.6 Sol with high reasoning effort.
+
+First understand the application, its architecture, trust boundaries, authentication, authorization, data ownership, sensitive data flows, APIs, storage, integrations, and deployment assumptions. Then derive repository-specific attack paths instead of only matching known vulnerability patterns.
+
+Ignore informational and low-risk findings. Focus on high-risk and critical issues. Include medium-risk findings only if they are obvious and materially important.
+
+A later follow-up review will assess low-severity findings, informational issues, hardening opportunities, and general best-practice gaps. Do not include those in this report.
+
+Primary focus areas:
+
+* OWASP Top 10
+* IDOR and broken access control
+* Broken authentication, including:
+
+  * pre-authentication access without valid login
+  * post-authentication access to other tenants, users, objects, or resources the current account should not be able to reach
+* Privilege escalation
+* Cross-user and cross-tenant data access
+* API key, token, credential, or secret disclosure
+* Potential SSRF
+* Potential CSRF
+* Potential LFI and path traversal
+* SQL, command, template, or code injection
+* Insecure deserialization
+* Unsafe file upload or file access
+* Session confusion, fixation, or hijacking
+* OAuth, OIDC, or identity-mapping flaws
+* Business-logic vulnerabilities
+* Trust-boundary violations
+* Security-relevant race conditions or state inconsistencies
+* Insecure internal API exposure
+* Deployment or configuration flaws that create a concrete exploitable path
+
+Apply these security invariants wherever relevant:
+
+* A user may only access resources they own or are explicitly authorized to access.
+* A tenant or user identifier must never be trusted without server-side ownership validation.
+* Authentication must always precede authorization.
+* Authentication alone is not sufficient for object-level or tenant-level access.
+* Frontend restrictions are not authorization controls.
+* Every sensitive read, write, update, delete, export, background job, and internal API operation must enforce the correct user, tenant, role, and ownership context.
+* Secrets must never be exposed through APIs, frontend state, logs, errors, caches, exports, or alternate endpoints.
+* Cached data and authorization decisions must never cross user or tenant boundaries.
+* Background jobs must not gain broader privileges than the initiating user.
+* Security checks and sensitive actions must operate on the same validated object and identity context.
+* Internal services, proxy headers, callbacks, and integration responses must not be trusted solely because they appear internal.
+* Fail-open behavior must not grant access, expose data, or bypass a security control.
+
+Assume a malicious unauthenticated attacker and a malicious authenticated user are actively attempting to:
+
+* access another user's or tenant's resources
+* retrieve API keys, credentials, tokens, or secrets
+* bypass authentication or authorization
+* escalate privileges
+* manipulate object identifiers
+* abuse alternate endpoints or internal APIs
+* exploit inconsistent validation between create, read, update, delete, export, cache, and background-processing paths
+* chain multiple individually minor weaknesses into a high-impact attack
+
+Do not report theoretical concerns without evidence.
+
+For each candidate issue:
+
+* identify the attacker-controlled entry point
+* trace the relevant data flow or call path
+* identify the missing or bypassed security control
+* identify the violated security invariant
+* confirm realistic reachability and required privileges
+* consider compensating controls
+* attempt to disprove the finding
+* distinguish confirmed evidence from assumptions and proof gaps
+* assess whether it can be manually verified later from a white-box perspective
+
+Prioritize findings where:
+
+* the attack path is plausible
+* the impact is clear
+* exploitation is realistic
+* manual verification is practical
+* the issue affects authentication, authorization, tenant isolation, sensitive data, secrets, privileged operations, or code execution
+
+Do not report:
+
+* denial-of-service or resource-exhaustion issues
+* regex injection or regex DoS
+* outdated third-party libraries or known dependency CVEs
+* missing audit logs
+* generic hardening gaps
+* missing security headers without a concrete exploit
+* secrets stored on disk when no unauthorized access path exists
+* memory-safety speculation in memory-safe languages
+* code-quality or maintainability issues without security impact
+* theoretical issues requiring unrealistic assumptions
+* low-severity or informational findings
+
+Only report Critical, High, and materially important Medium findings.
+
+For every reported finding, include:
+
+* title
+* severity
+* confidence
+* affected files and functions +  evidence from the code
+* manual verification steps or steps to reproduce during a white Box approach
+* reachable entry point
+* potential attack path
+* realistic impact
+* remediation guidance
+
+Keep the report evidence-driven and concise. Prefer a small number of strong findings over many weak observations.
+
+Write the final report to:
+
+Security-Report-UNIXTIMESTAMP.md
+
+Replace `UNIXTIMESTAMP` with the current Unix timestamp.
+
+Do not modify, create, delete, rename, or format any other file in the repository. Do not implement fixes, create proof-of-concept files, or access unauthorized external systems.
+```
+
+</details>
+
+<details>
 <summary><strong>Deep-Dive Security Code Review</strong></summary>
   
 ```text
