@@ -1,0 +1,150 @@
+# Defender EASM API Runbook
+
+Use this runbook for Microsoft Defender External Attack Surface Management
+(Defender EASM) work. Resolve the target subscription, resource group, and
+workspace from the active Azure CLI context; never hard-code customer values.
+
+## Operating rules
+
+- Start read-only. Creating, replacing, running, or deleting a discovery group
+  changes the customer's inventory or consumes discovery capacity and needs an
+  explicit request.
+- Prefer `az rest` for both ARM and EASM data-plane calls.
+- Record the method, complete path, API version, and concise response evidence.
+- Do not print tokens, complete raw asset exports, or sensitive observations.
+- Treat `2024-10-01-preview` as preview behavior. Verify it remains current
+  before using it in automation.
+
+## Context and endpoint discovery
+
+```sh
+az account show -o json
+az rest --method get \
+  --url "https://management.azure.com/subscriptions/<subscription-id>/providers/Microsoft.Easm?api-version=2021-04-01" -o json
+```
+
+The provider response is authoritative for ARM API versions. At the time this
+runbook was written, the newest registered ARM workspace version was
+`2023-04-01-preview`; do not assume that an API version listed in public specs
+is enabled in the target subscription.
+
+Resolve the workspace and use its `properties.dataPlaneEndpoint`:
+
+```sh
+az rest --method get --url \
+  "https://management.azure.com/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Easm/workspaces/<workspace>?api-version=2023-04-01-preview" \
+  -o json
+```
+
+Build the data-plane base URL as:
+
+```text
+https://<dataPlaneEndpoint>/subscriptions/<subscription-id>/resourceGroups/<resource-group>/workspaces/<workspace>
+```
+
+Every data-plane request needs the EASM resource audience:
+
+```sh
+az rest --method get --resource 'https://easm.defender.microsoft.com' --url \
+  "<base-url>/assets?api-version=2024-10-01-preview&maxpagesize=100&responseType=REDUCED"
+```
+
+## API surface
+
+Control plane (ARM): workspaces, workspace labels, and workspace tasks.
+
+Data plane (`2024-10-01-preview`): assets (including export, deltas, and
+observations), discovery groups and runs, discovery templates, reports, saved
+filters, policies, data connections, and tasks. Use the current Microsoft Learn
+REST reference to confirm an operation's verb and payload before a mutation.
+
+Useful read operations:
+
+```text
+GET  <base-url>/assets?api-version=2024-10-01-preview
+GET  <base-url>/assets/{assetId}?api-version=2024-10-01-preview
+POST <base-url>/assets/{assetId}:getObservations?api-version=2024-10-01-preview
+GET  <base-url>/discoGroups?api-version=2024-10-01-preview
+GET  <base-url>/discoGroups/{groupName}?api-version=2024-10-01-preview
+GET  <base-url>/discoTemplates?api-version=2024-10-01-preview
+GET  <base-url>/dataConnections?api-version=2024-10-01-preview
+GET  <base-url>/savedFilters?api-version=2024-10-01-preview
+GET  <base-url>/policies?api-version=2024-10-01-preview
+GET  <base-url>/tasks?api-version=2024-10-01-preview
+POST <base-url>/reports/assets:getSummary?api-version=2024-10-01-preview
+```
+
+Use `maxpagesize` within the endpoint limit and follow `nextLink` or `mark`.
+Do not assume `skip` is sufficient for every asset query.
+
+## Asset IDs and findings
+
+EASM asset IDs in paths are base64-encoded. Encode the logical ID before using
+it in a path and URL-encode padding:
+
+```sh
+printf '%s' 'ipAddress$$<public-ip>' | base64 -w 0
+```
+
+Then query observations with a POST (an empty JSON body is valid):
+
+```sh
+az rest --method post --resource 'https://easm.defender.microsoft.com' \
+  --url "<base-url>/assets/<base64-asset-id>:getObservations?api-version=2024-10-01-preview&maxpagesize=100" \
+  --body '{}'
+```
+
+Use `prioritySummary` and `value` as the evidence for High/Medium/Low findings.
+If `totalElements` is zero, state that there are no EASM observations rather
+than converting asset metadata or old scan banners into findings.
+
+## Add a domain or public IP CIDR
+
+Domains and public CIDRs are discovery *seeds*, not assets to POST directly.
+Create or replace a discovery group with `PUT /discoGroups/{groupName}`. Use
+`kind: domain` for a domain and `kind: ipBlock` for a CIDR. Private addresses
+cannot be discovery seeds; CIDRs must use their network address.
+
+Example body (replace placeholders; do not reuse the existing group's whole
+body blindly):
+
+```json
+{
+  "description": "Managed discovery seeds",
+  "frequencyMilliseconds": 604800000,
+  "tier": "advanced",
+  "seeds": [
+    { "name": "example.com", "kind": "domain" },
+    { "name": "203.0.113.0/24", "kind": "ipBlock" }
+  ],
+  "excludes": []
+}
+```
+
+```sh
+az rest --method put --resource 'https://easm.defender.microsoft.com' \
+  --url "<base-url>/discoGroups/<url-encoded-group-name>?api-version=2024-10-01-preview" \
+  --body '<validated-json>'
+```
+
+`PUT` replaces the group configuration. First `GET` the group, merge the new
+seed without removing existing seeds/exclusions, show the proposed diff, then
+write. To start discovery after approval:
+
+```sh
+az rest --method post --resource 'https://easm.defender.microsoft.com' \
+  --url "<base-url>/discoGroups/<url-encoded-group-name>:run?api-version=2024-10-01-preview" \
+  --body '{}'
+```
+
+Poll the group or `/tasks` until the run reaches a terminal state.
+
+## Validation checklist
+
+1. Confirm active account and subscription.
+2. Read the Microsoft.Easm provider and target workspace.
+3. Confirm data-plane endpoint and use the EASM token audience.
+4. List discovery groups before and after any approved change.
+5. Re-read the changed group, verify seeds/exclusions/frequency, then run only
+   when requested.
+6. Query observations by encoded asset ID for finding counts and priorities.
