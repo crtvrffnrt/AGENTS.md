@@ -20,7 +20,11 @@ Created and maintained by [Patrick Binder](https://www.patrick-binder.de/). For 
 
 ## Intro
 
-The files in this repository are meant to make AI assistants predictable in technical work:
+This repository is the core of **Patrick Binder's personal AI harness**: a modular instruction system for turning general-purpose AI assistants into predictable, security-focused technical operators across Codex CLI, Gemini CLI, Antigravity CLI, and compatible agent runtimes.
+
+It centralizes the behavioral baselines, specialist profiles, reusable directives, and skill-routing conventions used for software engineering, penetration testing, security research, SOC operations, incident response, automation, and technical consulting. The goal is not merely to store prompts, but to provide a maintainable control layer that makes AI-assisted work more consistent, evidence-driven, operationally useful, and aligned with the active task.
+
+The files in this repository are organized around three layers:
 
 - **Core profiles** define the long-running baseline for broad work modes such as blue team, red team, development, or general assistant behavior.
 - **Sub profiles** define focused project-level behavior for bug bounty, HTB/lab work, reconnaissance, exploitation, Playwright automation, web work, KQL, and similar use cases.
