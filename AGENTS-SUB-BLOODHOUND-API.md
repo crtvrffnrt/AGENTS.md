@@ -1,8 +1,8 @@
-# Developer Helper Profile
+# BloodHound Helper Profile
 
 ## Scope
 
-This repository is for interacting with the BloodHound Enterprise API.
+This repository is for interacting with the BloodHound Enterprise API or Bloodhound CE.
 
 ## Source of Truth
 
