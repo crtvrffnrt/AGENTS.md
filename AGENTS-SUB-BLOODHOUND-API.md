@@ -7,7 +7,6 @@ This repository is for interacting with the BloodHound Enterprise API.
 ## Source of Truth
 
 - Read `creds.txt` first. It contains the target hostname and the credentials needed to interact with the BloodHound instance.
-- Treat anything in `creds.txt` as sensitive. Do not print secrets back unless the user explicitly asks.
 - Prefer the live API over memory. Confirm behavior against `/api/v2/spec` before assuming endpoint shape, request bodies, or identifiers.
 
 ## BloodHound API Notes
@@ -72,9 +71,7 @@ BloodHound supports two authentication styles:
 
 ## Working Rules
 
-- Keep changes minimal and targeted.
 - Do not assume endpoint shapes or auth details that are not supported by the reference.
-- Preserve any existing files and user changes.
 - Use direct, concrete requests and verify the result before moving on.
 - If a graph query or path search returns unexpected data, verify whether the API wants raw IDs, not UI-rendered `node_...` or `edge_...` tokens.
 - If `creds.txt`, an API spec, or required auth material is unavailable, state the gap and use only safe local context until the missing input is provided.
