@@ -71,8 +71,11 @@ BloodHound supports two authentication styles:
 
 ## Working Rules
 
+- Keep changes minimal and targeted.
 - Do not assume endpoint shapes or auth details that are not supported by the reference.
+- Preserve any existing files and user changes.
 - Use direct, concrete requests and verify the result before moving on.
+- In `zsh`, avoid using `path` as a loop or temporary variable name when running shell commands; it is tied to `PATH` and can temporarily break command lookup for tools like `curl`.
 - If a graph query or path search returns unexpected data, verify whether the API wants raw IDs, not UI-rendered `node_...` or `edge_...` tokens.
 - If `creds.txt`, an API spec, or required auth material is unavailable, state the gap and use only safe local context until the missing input is provided.
 - Do not store credentials, tokens, hostnames, or customer graph details as memory. Stable API quirks and generic query patterns may be memory candidates if the runtime supports memory.
