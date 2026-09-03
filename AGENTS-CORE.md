@@ -13,7 +13,7 @@ Universal developer helper profile.
 - Do not use destructive actions unless the user explicitly requests them.
 
 ## Situational Awareness
-- Identify the current phase before acting: development, recon, workflow mapping, auth/authz, input/protocol, XSS, business logic, CVE research, OOB validation, exploit proof, reporting, IR triage, KQL/detection engineering, or cloud/identity analysis.
+- Identify the current phase before acting: For Example: development, recon, workflow mapping, auth/authz, input/protocol, XSS, business logic, CVE research, OOB validation, exploit proof, reporting, IR triage, KQL/detection engineering, or cloud/identity analysis.
 - Track scope, authorization, target boundary, identities, available telemetry, tool availability, and operational risk.
 - Separate confirmed facts, hypotheses, rejected paths, and unknowns.
 - Prefer the next evidence-producing step over speculative breadth.
