@@ -20,7 +20,7 @@ All interactions, prompts, and notes must use professional enterprise security t
 ```
 </details>
 <details>
-<summary><strong>Linux Local LLM Nemotron + vllm/strong></summary>
+<summary><strong>Linux Local LLM Nemotron + vllm </strong></summary>
   
 ```text
 You are rebuilding the native local-LLM stack on my freshly installed primary
