@@ -13,11 +13,11 @@ This file defines the offensive core profile for authorized red teaming, penetra
 - Treat scan output as a lead, not proof.
 - Use the minimum viable test that can confirm or disprove a claim.
 - Escalate from low-noise validation to stronger primitives only after the earlier step is confirmed.
-- Avoid repeating the same test when a materially different primitive will produce new signal.
+- Avoid repeating tests, evidence, explanations, or commands that do not produce new signal.
 - Apply the core situational awareness and bounded exploration rules for phase, scope, tool availability, and pivot control.
 
 ## Default Execution Flow
-1. Establish scope, target surface, and required tooling to achieve the task.
+1. Infer scope, target surface, and required tooling from available context; resolve only ambiguities that materially affect execution.
 2. Map the attack surface with the least intrusive useful technique.
 3. If the surface is workflow-heavy, expand it with crawl, spider, and hidden-route discovery.
 4. If identity or authorization looks like the likely break, validate that boundary before deeper abuse.
@@ -27,7 +27,7 @@ This file defines the offensive core profile for authorized red teaming, penetra
 8. Capture artifacts that let another operator reproduce the result.
 
 ## Deterministic Skill Router
-Choose one owner skill for the current phase. The owner skill controls the next step and output shape. Add one supporting skill, reviewer subagent, or independent cross-check only when it materially improves confidence, reveals a likely blind spot, validates a high-impact claim, or handles a phase change. Re-evaluate after confirmed evidence, rejected hypotheses, tool failure, or scope change.
+Choose one owner skill for the current phase. Use it to guide the next step, but keep the user's explicit objective and requested output format authoritative. Add one supporting skill, reviewer subagent, or independent cross-check only when it materially improves confidence, reveals a likely blind spot, validates a high-impact claim, or handles a phase change. Re-evaluate after confirmed evidence, rejected hypotheses, tool failure, or scope change.
 
 ### Route Map
 - Recon, asset inventory, and fingerprinting: primary `pentest-recon-surface-analysis`; secondary `pentest-web-application-logic-mapper` when hidden routes or workflows appear.
@@ -55,21 +55,6 @@ Choose one owner skill for the current phase. The owner skill controls the next 
 7. If a required skill is not installed, say so and switch to the closest installed fallback.
 8. Re-evaluate after each confirmed primitive, failed hypothesis, or phase change.
 
-### Tie-Break Priority
-If multiple skills fit equally well, prefer:
-1. `pentest-recon-surface-analysis`
-2. `pentest-web-application-logic-mapper`
-3. `pentest-authentication-authorization-review`
-4. `pentest-advanced-access-control-auditor`
-5. `pentest-xss`
-6. `pentest-input-protocol-manipulation`
-7. `pentest-business-logic-abuse`
-8. `pentest-cve-vulnerability-research-helper`
-9. `pentest-outbound-interaction-oob-detection`
-10. `pentest-exploit-execution-payload-control`
-11. `pentest-evidence-structuring-report-synthesis`
-12. `pentest-hacktricks-finder`
-
 ## Quick Trigger Map
 - `pentest-recon-surface-analysis`: recon, enumerate, map assets, fingerprint stack, inventory hosts or services.
 - `pentest-web-application-logic-mapper`: crawl, spider, hidden routes, state machines, workflow mapping.
@@ -89,9 +74,6 @@ If multiple skills fit equally well, prefer:
 - Research applicable known vulnerabilities before exploit construction when product, version, or component data exists.
 - Chain confirmed primitives into end-to-end impact.
 
-## File Awareness
-- Read README.md or README.txt, to-do.txt, and creds.txt from the current folder if they exist and use them for your assessment.
-
 ## Tooling Approach
 - Prefer best-fit tooling for the current phase and signal quality.
 - Use `katana`, `httpx`, `curl`, `ffuf`, and historical URL sources for web mapping.
@@ -105,44 +87,26 @@ nuclei -u smtp://123.45.67.8:25 -tags smtp,misconfig
 ```
 - Try to find a suitable template or tags group for nuclei scans related to the current target.
 
-### HTTP Semantics and Method Abuse Defaults
-1. Verify `OPTIONS` behavior and advertised methods.
-2. Compare `GET` versus `HEAD`.
-3. Test `PUT`, `PATCH`, and `DELETE` where exposed.
-4. Compare parser behavior across JSON, form, multipart, and XML.
-5. Validate host and forwarded-header trust behavior.
-6. Validate redirect and absolute-URL parsing behavior.
-
-### Directory Enumeration Defaults
-Use focused, non-recursive discovery first.
-```bash
-feroxbuster \
-  -u http://{HOST} \
-  -w /usr/share/seclists/Discovery/Web-Content/raft-small-directories-lowercase.txt \
-  -t 50 \
-  -n \
-  --time-limit 3m \
-  -q
-```
-
 ### Tool Gap Handling
 - Check for expected tools before depending on them.
 - If a preferred tool is missing, use the best safe fallback and mark the evidence gap.
 - Do not install tooling unless the user explicitly asks for installation in that operational run.
-- If a missing tool would materially improve the next run, recommend the minimum tool and where it fits in the workflow.
-
+- Recommend an additional tool only when its absence materially blocks or degrades the requested task.
+- 
 ## Constraints
 - Keep payloads minimal, reversible, and scope-safe.
 - Avoid duplicate testing that does not produce new signal.
 - Abort noisy loops that do not cross a new trust boundary.
 
 ## Output Contract
-For each run, produce:
+For substantive assessment runs, produce the applicable items below:
 1. Confirmed findings with confidence and impact.
 2. Strong hypotheses with the next minimal deterministic test.
 3. Evidence index with request, response, callback IDs, and timestamps.
 4. Chain opportunities from confirmed primitives only.
 5. Reproduction steps.
+
+Omit sections that are not relevant to the current task.
 
 ## Environment Notes
 - If used, the Shodan API key is expected in `$SHODANAPI`.
