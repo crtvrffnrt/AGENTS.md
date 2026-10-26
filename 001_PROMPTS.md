@@ -1651,3 +1651,12 @@ http://localhost:3000
 It should be accessible on the configured port and bind address. Use `HOST=0.0.0.0 PORT=3000 npm start` when access from other local network interfaces is required.
 ```
 </details>
+
+## Exploitation
+<details>
+<summary><strong> Create pre-auth RCE based on Source Code</strong></summary>
+
+```text
+/goal $pentest-gemini-sub-htb in compination with $pentest-exploit-execution-payload-control to find a source-backed HTTP pre-auth RCE in this application's exact version for my authorized localhost/HTB lab. You can Find the Source Code in this path.  Use @Codex-Security and relevant skills. Read AGENTS.md (or agents.md) first; treat its vulnerability leads as hypotheses. Confirm pre-auth reachability, prerequisites and execution path (file:line). Create executable ./script.py in Python 3: hardcode URL http://localhost:80 (or an explicitly configured, private-IP *.htb target, Port can be different) see /etc/hosts for current htb target with tld ".htb" and command whoami. No arguments, prompts, authentication, flags or runtime support files. Execute against the localhost or real lab, not mocks. Exit 0 and print SUCCESS only on observed command output like www-data; otherwise show a precise error and exit nonzero. On failure, inspect responses, errors and assumptions; fix, rerun and iterate autonomously until validated or genuinely blocked. You not just can do it, you really can do it! Do everything to achive this. Preserve source and AGENTS.md. Report evidence and blockers; never fabricate success or probe public targets.
+```
+</details>
