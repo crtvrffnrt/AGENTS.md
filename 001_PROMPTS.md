@@ -1660,3 +1660,31 @@ It should be accessible on the configured port and bind address. Use `HOST=0.0.0
 /goal $pentest-gemini-sub-htb in combination with $pentest-exploit-execution-payload-control to find a source-backed HTTP pre-auth RCE in this application's exact version for my authorized localhost/HTB lab. You can find the Source Code in this path.  Use @Codex-Security and relevant skills. Read AGENTS.md (or agents.md) first; treat its defined content about a vulnerability leads as hypotheses only if Agents.md has specific information. If Agents.md has not specific technical detail, use it as Systemprompt only.  Also take pre-given technical Background information if given from AGENTS.md. Confirm pre-auth reachability, prerequisites and execution path (file:line). Create executable ./script.py in Python 3 as your primary language of choise: hardcode URL http://localhost:80 (or an explicitly configured, private-IP *.htb target, Port can be different) see /etc/hosts for current htb target with tld ".htb" and command whoami. No arguments, prompts, authentication, flags or runtime support files. Execute against the localhost or real lab, not mocks. Exit 0 and print SUCCESS only on observed command output like www-data; otherwise show a precise error and exit nonzero. On failure, inspect responses, errors and assumptions; fix, rerun and iterate autonomously until validated or genuinely blocked. You not just can do it, you really can do it! Do everything to achive this. Preserve source and AGENTS.md. Report evidence and blockers; never fabricate success or probe public targets. If you find somthing which is a confirmed exploitable, create a additional nuclei template to test the target which can additionally proof your finding. 
 ```
 </details>
+<details>
+<summary><strong> find Information Disclosure Vulnerability based on Source Code via Opencode</strong></summary>
+
+```text
+/goal Find and validate a previously unknown, security-relevant **unauthenticated information disclosure vulnerability** in Nextcloud 35.0.2.
+
+**Environment**
+- Source code: `./server-35.0.2/`
+- Live Docker target: `http://localhost:80` (`http://next.htb`)
+- Runtime: OpenCode + local Nemotron 3.5 Lightning via vLLM
+- Read `AGENTS.md` first. Dynamically update it with technical findings, tested hypotheses, and research progress.
+- Use all available tools and relevant skills. Codex-Security is unavailable.
+
+**Execution**
+1. Analyze the actual source code to identify authentication bypasses, missing authorization checks, exposed files, sensitive API responses, or unintended information disclosure.
+2. Prioritize vulnerabilities exposing information normally requiring authentication, especially configuration, internal files, user data, or sensitive server details.
+3. Operate autonomously. Inspect and modify the Docker lab, create test users, seed private test files, and establish authenticated baselines whenever necessary.
+4. Test every promising hypothesis against the real running server. No mocks, theoretical findings, or fabricated evidence.
+5. Run a continuous autonomous **ANALYZE → TEST → EVALUATE → ADAPT → RETEST** loop. Learn from failures, revise hypotheses, and pursue new attack surfaces. Do not stop after unsuccessful attempts.
+6. Prioritize reproducible vulnerabilities with demonstrable business impact. Distinguish genuine application vulnerabilities from intended public endpoints, artificial test conditions, and misconfigurations.
+7. For a confirmed vulnerability, create `./poc.py`: a standalone Python 3 script requiring no authentication or runtime arguments, targeting `http://localhost:80`. It must reproduce the disclosure and display the actual evidence.
+8. Verify that the disclosed information is normally protected, document the exact vulnerable code path (`file:line`), prerequisites, reproduction steps, and business impact.
+
+**Autonomy:** Execute independently, including debugging, testing, and iterative improvements. Maintain persistent research state in `AGENTS.md` without destroying existing instructions. No arbitrary iteration limit. Stop only after a reproducible finding is validated or further execution is genuinely blocked.
+
+**Success condition:** A working, independently reproducible unauthenticated information disclosure PoC against the real Nextcloud 35.0.2 Docker instance, demonstrating meaningful security impact suitable for responsible vulnerability disclosure and potential CVE assessment. Never claim success without observed evidence. Restrict all active testing to the local Docker lab. 
+```
+</details>
