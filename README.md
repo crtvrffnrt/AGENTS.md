@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>Antigravity CLI | Gemini CLI | Codex CLI instruction profiles focused on defensive and offensive workflows.</strong>
+  <strong>Antigravity CLI | Codex CLI instruction profiles focused on defensive and offensive workflows.</strong>
 </p>
 
 <p align="center">
