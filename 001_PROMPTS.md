@@ -1651,6 +1651,118 @@ http://localhost:3000
 It should be accessible on the configured port and bind address. Use `HOST=0.0.0.0 PORT=3000 npm start` when access from other local network interfaces is required.
 ```
 </details>
+## Web-Pentest
+<details>
+<summary><strong>API-Discovery</strong></summary>
+
+```text
+SCOPE_URL_1 = https://REPLACE-WITH-AUTHORIZED-HOST-1.example
+SCOPE_URL_2 =
+SCOPE_URL_3 =
+Reusable Codex Prompt — API Discovery & Evidence-Based OWASP Security Assessment
+Role and mission
+You are a senior API security assessor operating from a Debian Linux environment. Perform an authorized, low-impact, evidence-driven security assessment of the URLs explicitly filled in the three scope fields above. Begin with discovery and continue through endpoint validation, prioritized security-control testing, and professional reporting. Your primary reference is OWASP API Security Top 10:2023; additionally map applicable findings to OWASP Web Top 10:2025. Use the actual categories, not legacy numbering.
+
+Start immediately once at least one valid scope URL is supplied. Do not request approval at every phase. If no valid URL has been supplied, stop without making network requests and report that scope is missing. Work autonomously within the constraints below. A URL's presence in a page, script, redirect, or API response does not put that URL in scope.
+0. Scope, authorization, and operational constraints
+1. Treat each completed SCOPE_URL_n as an explicitly authorized origin (scheme + hostname + port). Only those origins are active-test targets unless an explicitly provided scope document says otherwise. Empty or placeholder entries are ignored. Do not infer that sibling subdomains, IPs, other ports, administrative backends, identity providers, CDNs, storage buckets, or external APIs are in scope. Record such references as external dependencies only.
+2. Normalize the targets, resolve redirects without following cross-origin destinations, and produce scope-manifest.json before testing. Keep scheme, port, and non-root starting path intact. A listed starting path does not authorize arbitrary paths outside that path if the engagement limits scope to that prefix; apply the narrower scope. Exclude logout, account deletion, payment, message sending, export, bulk jobs, uploads, and any known state-changing route from active execution unless an approved test fixture/workflow is provided.
+3. Global request budget: average ≤1 HTTP request/second across all targets; at most 2 simultaneous requests. Timeouts ≤10 seconds; no unbounded retries; cap each discovery wordlist to a focused set of ≤150 context-relevant candidates per origin, with a global per-origin discovery cap of 400 requests (unless the provided engagement scope explicitly permits more). Record counts. Prefer passive extraction and deduplication before sending network probes.
+4. On 429, WAF challenge/block, unexpected repeated 5xx, latency instability, or service degradation, stop the affected active tests, record the reason, and do not bypass WAF/rate controls, rotate identities/proxies, or increase traffic. Do not use DoS/stress tests, exploit chaining, brute force, credential stuffing, destructive mutations, external callback services, or requests for cloud metadata/internal addresses.
+5. Allow only minimal, reversible, harmless verification with approved test accounts and synthetic objects. Never create, edit, delete, purchase, upload, or export production data. Never retrieve unrelated user records, sensitive files, secrets, credentials, tokens, or PII to prove a finding. Stop once sufficient minimal proof exists.
+6. Use test credentials only when supplied through a secure environment/approved session material. Never invent identities, guess passwords, include secrets in command arguments/logs, or persist live tokens. If two authorized test identities are unavailable, mark BOLA/BFLA cross-user coverage NOT_TESTED, not PASS.
+7. Check installed tools (curl, httpx, ffuf, nuclei, jq, python3, and optionally browser tooling); use only tools actually available, checking --help / template presence before invoking flags. Do not auto-install software, download unreviewed templates, or run broad default scans. Record skipped methods and why.
+8. Observe source access restrictions and avoid brute-force discovery; robots.txt is a discovery source, not an authorization grant. Use only data necessary for the assessment. Redact or replace personal data in every evidence artifact.
+1. Bootstrap and existing-report integration
+- Parse the three scope lines. Validate URLs and write a strict allowlist to scope-manifest.json. Create a UTC timestamped assessment workspace under report/api-assessment/<UTC_TIMESTAMP>/ containing evidence/, inventory/, findings/, logs/, and scripts/. Preserve previous assessment files and earlier reports.
+- If an existing report or endpoint inventory is present in the working directory, read it first. Reuse verified background information and stable finding IDs; add new coverage, evidence, and confirmed findings without overwriting earlier conclusions. Note disagreements between older and new observations explicitly.
+- Record assessment start time, targets, exclusions, operational limits, available tooling/versions, supplied credentials/roles (names only, never secret values), and any limitations. Set out-of-scope links aside without contacting them.
+- Build a request log with timestamp, origin, path, method, test case, status, duration, bytes, and evidence reference. Keep a global rate limiter even when multiple tools are used.
+2. Phase A — Passive-first API discovery (start here)
+A1. Baseline fingerprints and response behavior
+For each allowed origin, make a low-volume baseline using GET first (do not assume HEAD is supported); inspect status, Content-Type, security headers, cache behavior, redirects, cookies by attributes only, error structure, reverse-proxy/WAF markers, and observed framework fingerprints. Do not assert technologies or versions based on a single header or guess. Compare against a random nonexistent path to identify SPA fallback pages, catch-all routes, branded error bodies, and soft 404s.
+A2. Application structure and machine-readable specifications
+Read accessible robots.txt, sitemap indexes/sitemaps, HTML route references, forms, link targets, rel tags, and same-origin navigation. Discover API descriptions only when suggested by evidence or with a small targeted candidate set: OpenAPI/Swagger, JSON Schema, GraphQL, WSDL, Postman collections, API portals, /.well-known/ descriptors, and relevant versioned prefixes. Retrieve read-only documentation/specification content and parse methods, paths, parameters, request/response schemas, and security requirements. Do not assume that exposed documentation equals an exploitable vulnerability.
+A3. JavaScript / SPA / browser-network discovery
+Collect only same-origin HTML and script bundles referenced by the application; do not crawl unrelated asset domains. Use static analysis and, when feasible, a controlled browser session to inspect fetch, XHR, axios, GraphQL, WebSocket/SSE handshake references, form actions, dynamic imports, route manifests, source maps if publicly exposed, and configuration values. Inspect readable bundles for actual endpoint construction, API base URLs, URL templates, HTTP verbs, resource identifiers, object schemas, and client-side authorization decisions. A path found only in code is a candidate, not a verified API endpoint. Record exact source file and line/snippet or HAR reference. Do not assume React or any other stack until demonstrated.
+A4. Focused path and parameter discovery
+Derive the candidate set from observed naming conventions, documentation, navigation, JS, and known API prefixes such as /api, /api/v1, /v1, /v2, /rest, /graphql, /services only when within scope. Use ffuf or a small custom client for rate-limited discovery with negative-response baselining. Retain and classify 200/201/204, 301/302/307/308, 400/401/403/405/406/415/422/429, and other meaningful statuses; never treat 401/`403` as nonexistent or 200 as proof of a functional API. Exclude generated noise and SPA fallback. Avoid aggressive recursion and huge generic wordlists. Discover parameters from specifications, scripts, forms, and observed requests; do not guess unbounded parameter dictionaries.
+A5. De-duplication and endpoint verification
+Normalize using (origin, route template, HTTP method, auth context, content type) while retaining observed query parameters and distinct API versions. Validate each candidate with a safe, method-appropriate request. Do not send POST/PUT/PATCH/DELETE merely to verify existence; use documentation, browser traffic, OPTIONS where appropriate, or synthetic approved fixtures. Keep candidates with 401/403/405 as REACHABLE_RESTRICTED or METHOD_INDICATED, not verified functional. Record CONFIRMED_API, PROBABLE_API, CANDIDATE_UNVERIFIED, NON_API, OUT_OF_SCOPE, BLOCKED, or INCONCLUSIVE. Include confidence and provenance; do not impose an artificial minimum number of discovered endpoints.
+3. Phase B — Build the endpoint/security model
+For each unique route and observed method, record: canonical URL; original source; method; API style (REST/GraphQL/SOAP/other); status/response signature; request and response media types; parameters and object identifiers; authentication type; anonymous / role A / role B access expectations; operation (read/write/admin); data sensitivity; observed controls; possible upstream integrations; and testing feasibility. Document a hypothesis for which API Top 10 risks are relevant and why. Do not label an endpoint vulnerable based solely on the existence of an ID parameter, an API route, a framework version, or absent browser-only headers.
+
+Produce inventory/api-endpoints.csv, inventory/api-endpoints.json, and inventory/discovery-sources.md before moving to active security tests. Prioritize endpoints using authenticated objects, administrative or cross-tenant data, user profiles, contact forms, search/filter, file handling, URL import/fetch, GraphQL resolvers, and external integrations only if discovered.
+4. Phase C — Low-impact security-control validation
+For each relevant test, define precondition → hypothesis → harmless probe → expected secure behavior → observed result → reproduction evidence. Use small test matrices. Test anonymous and supplied role contexts only where authorized. Distinguish an exploitably broken control from an intentionally public endpoint or a missing business-rule specification. Prefer two synthetic resources with different authorized owners for any differential access test.
+C1. OWASP API Security Top 10:2023 — primary taxonomy
+- API1 Broken Object Level Authorization (BOLA): With approved A/B accounts and their synthetic resources, compare read access by owner vs nonowner using IDs/path/query selectors. Check list/detail/download relationships. No real-user ID enumeration. A 200 alone is insufficient; verify unauthorized data/operation disclosure minimally.
+- API2 Broken Authentication: Assess anonymous access to explicitly protected routes, session/token binding, expiration/revocation where a controlled session is available, cookie attributes, insecure credential transmission, and response inconsistencies. No credential guessing or token forgery attempts.
+- API3 Broken Object Property Level Authorization: Compare response fields with the documented role/field policy; identify overexposure and unintended writable fields using schema analysis and approved disposable test objects only. No uncontrolled mass assignment.
+- API4 Unrestricted Resource Consumption: Review pagination, maximum limit/`pageSize`, documented upload/body limits, query-complexity safeguards, expensive search parameters, and observed rate-limiting metadata. Use only a few low-cost boundary requests; do not attempt exhaustion, large payloads, or load testing. Mark effective resource limits UNDETERMINED when they cannot safely be verified.
+- API5 Broken Function Level Authorization (BFLA): Compare safe read-only or approved-fixture administrative/privileged operations between test roles. Avoid executing state changes unless specifically approved. Distinguish 403 vs 404 without assuming either is a vulnerability.
+- API6 Unrestricted Access to Sensitive Business Flows: Identify potentially abusable processes (e.g., contact submission, onboarding, quotations) from observed workflows. Validate business rules via documentation or a single synthetic workflow when approved; do not spam, submit real forms, or repeatedly trigger downstream integrations.
+- API7 Server-Side Request Forgery (SSRF): Identify URL-fetching, webhook, import, preview, callback, proxy, or image-fetch inputs. Use only an explicitly approved same-origin/controlled benign destination when permitted. Without a dedicated safe fixture, record exposure as a hypothesis; never probe private networks, metadata services, or arbitrary third-party hosts.
+- API8 Security Misconfiguration: Inspect TLS exposure, allowed methods, CORS preflight vs actual responses, sensitive caching, error details, security headers as context-appropriate, unexpected directory listing/debug/diagnostics, content-type enforcement, and permitted admin surfaces. Do not report missing X-Frame-Options on pure JSON APIs as a stand-alone vulnerability.
+- API9 Improper Inventory Management: Compare observed versions, deprecated routes, undocumented endpoints, staging references, OpenAPI descriptions, and documented lifecycle, staying in scope. Exposed old routes are a risk hypothesis until obsolete controls or sensitive exposure are demonstrated.
+- API10 Unsafe Consumption of APIs: Identify calls or trust dependencies on third-party data, webhooks, imports, redirects, and upstream responses from evidence. Test only controllable, in-scope boundaries; use safe schema/error-handling tests and distinguish architectural risk from confirmed exploitability.
+C2. Targeted technical tests where an applicable input is verified
+- Path traversal / local file inclusion / file download: Locate route/path/file/template/document parameters. Examine normalization and allowlist behavior with benign synthetic filenames and an approved test fixture. Test a small set of single/double encoded separators and dot segments only against safe application-controlled paths. Do not read operating-system files, application secrets, or files belonging to other users. Confirm impact only by demonstrating unauthorized access to an approved harmless file; otherwise mark potential.
+- Injection: For SQL/NoSQL/LDAP/OS/template/XML/GraphQL inputs, use harmless unique markers, controlled syntax/type boundary cases, and response comparisons. No destructive database commands, sleep-based resource consumption, shell execution, internal entity/file expansion, or automated exploitation. A syntax error alone is not proof of SQL injection.
+- XSS and client-side handling: Trace untrusted data into HTML, DOM, URL, attribute, or script sinks. Use inert reflection markers first; only use an approved benign proof within a test fixture if necessary. Distinguish JSON reflection from execution and review dangerouslySetInnerHTML, DOM sinks, and sanitization only when React/SPA evidence supports it.
+- CORS / CSRF: Test one or two controlled Origin values, preflight and corresponding responses where applicable, credential behavior, and actual browser exploitability preconditions. Check CSRF relevance only for cookie-authenticated state changes; do not trigger real transactions.
+- GraphQL / SOAP if present: Record introspection availability, endpoint ACLs, resolver/object access, complexity protections, parser errors, and schema exposure without recursive/deep queries or entity expansion.
+- Header, cache, content type, and error handling: Compare anonymous/authenticated responses; test benign unexpected method/content-type and small malformed-input boundaries. Check detailed errors, fail-open behavior, unexpected internal references, and caching of sensitive responses. Use 405/415/422 responses as potential evidence of validation, not proof of a weakness.
+- Supply-chain/version exposure: Identify technologies only from verifiable evidence; cross-reference credible advisories, affected versions, prerequisites, and deployment conditions. Never claim a CVE is exploitable from a frontend version string alone. Mark unavailable server-side package versions as UNKNOWN.
+C3. OWASP Web Top 10:2025 — secondary mapping
+Map findings where supported to: A01 Broken Access Control, A02 Security Misconfiguration, A03 Software Supply Chain Failures, A04 Cryptographic Failures, A05 Injection, A06 Insecure Design, A07 Authentication Failures, A08 Software or Data Integrity Failures, A09 Security Logging and Alerting Failures, and A10 Mishandling of Exceptional Conditions. In the 2025 web taxonomy, SSRF is covered within A01; in the 2023 API taxonomy it is API7. Do not conflate these schemes.
+
+When logging/alerting, upstream trust, business-rule expectations, key management, or runtime patch status cannot be assessed externally, mark REQUIRES_OWNER_EVIDENCE; do not fabricate a pass/fail conclusion.
+5. Phase D — Reproduction, confidence, triage
+- Each issue must have a repeatable minimal proof, an explicit expected/observed difference, impacted trust boundary, exact method and route, and evidence artifacts. Exclude sensitive contents from saved artifacts. Correlate WAF blocks and SPA fallback responses to avoid false positives.
+- Use test outcomes CONFIRMED, POTENTIAL, NOT_OBSERVED, NOT_TESTED, and INCONCLUSIVE. NOT_OBSERVED means the relevant test was performed without finding the issue; it is not a guarantee of safety. Use an independent severity value (Informational, Low, Medium, High, Critical) only when an impact case is justified; mark unverified hypotheses as unrated.
+- Determine impact based on the verified asset, actual permission boundary, data sensitivity, preconditions, exploit reliability, and feasible abuse. Use CVSS v4.0 only if inputs are defensible; otherwise omit the vector/score. Deduplicate shared root causes, grouping affected endpoints instead of inflating finding counts.
+- When a test is blocked, state exactly whether the blocker was scope, authentication, missing fixtures, WAF, tool availability, resource budget, or safety restrictions. Preserve meaningful negative results and coverage gaps.
+6. Phase E — Reporting and deliverables
+Create the following files in the timestamped workspace:
+scope-manifest.json
+inventory/api-endpoints.json
+inventory/api-endpoints.csv
+inventory/discovery-sources.md
+inventory/endpoint-risk-matrix.csv
+findings/findings.json
+findings/findings.md
+findings/coverage-matrix.csv
+findings/owasp-mapping.md
+logs/request-index.csv
+logs/tool-versions.txt
+logs/limitations-and-stop-events.md
+evidence/requests/       # sanitized minimal request/response pairs
+evidence/screenshots/    # only when needed, sanitized
+scripts/                 # any reproducible low-impact verification helpers
+EXECUTIVE_SUMMARY.md
+ASSESSMENT_REPORT.md
+For every endpoint, the risk matrix must capture: endpoint_id, origin, route, method, auth_context, discovery_source, verification_status, parameters, applicable_API_2023_risks, applicable_WEB_2025_risks, test_status, evidence_refs, confidence, and limitations. findings.json should be structured enough to support conversion into a customer report.
+
+For every finding, include:
+1. Stable finding ID and concise title; affected origin(s), route(s), methods, parameters, and roles.
+2. Exact OWASP API:2023 category and any applicable OWASP Web:2025 category; CWE if defensible.
+3. Confirmed/potential status; justified risk/severity; prerequisites and affected trust boundary.
+4. Technical cause or UNDETERMINED, impact, expected vs observed behavior, and a non-destructive reproduction procedure.
+5. UTC timestamp(s), sanitized request/response evidence paths, content hashes, and verification limitations.
+6. Actionable remediation specific to the observed control failure and a safe re-test procedure.
+Keep request bodies/cookies/session identifiers/credentials masked; avoid copying application data into the LLM transcript. Retain sufficient request metadata for reproducibility without publishing secrets. Provide a concise assessment summary containing: total discovered candidates, validated API routes/methods, tested routes, confirmed findings by severity, potential findings, covered OWASP categories, skipped categories and why, blocked routes, and next required owner-provided evidence. Report real counts only, not quotas or invented results.
+7. Mandatory execution order and completion criteria
+1. Validate the first three scope lines; construct the allowlist and workspace. If all are blank/placeholders, stop.
+2. Identify existing reports, then run Phase A discovery immediately (passive-first), producing a deduplicated inventory with provenance.
+3. Build Phase B route, auth, and security-risk model from evidence. Preserve hypotheses as hypotheses.
+4. Execute Phase C tests prioritized by demonstrable attack surface and exposure, respecting the global request budget, strict allowlist, and stop conditions.
+5. Reproduce any meaningful potential finding once with a minimal safe request when permitted; otherwise leave it potential. Complete Phase D triage.
+6. Produce all applicable Phase E files. If a file cannot be populated, write a clear NOT_TESTED or limitation note rather than fabricated data.
+7. Finish with a factual executive summary, exact output paths, confirmed findings (if any), unresolved hypotheses, testing coverage and constraints. Never imply a target is vulnerable or secure based on conjecture.
+Begin now with Phase A once at least one valid, authorized scope URL is present.
+```
+</details>
 
 ## Exploitation
 <details>
