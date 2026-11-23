@@ -1651,7 +1651,7 @@ http://localhost:3000
 It should be accessible on the configured port and bind address. Use `HOST=0.0.0.0 PORT=3000 npm start` when access from other local network interfaces is required.
 ```
 </details>
-## Web-Pentest
+Web-Pentest
 <details>
 <summary><strong>API-Discovery</strong></summary>
 
@@ -1761,6 +1761,1019 @@ Keep request bodies/cookies/session identifiers/credentials masked; avoid copyin
 6. Produce all applicable Phase E files. If a file cannot be populated, write a clear NOT_TESTED or limitation note rather than fabricated data.
 7. Finish with a factual executive summary, exact output paths, confirmed findings (if any), unresolved hypotheses, testing coverage and constraints. Never imply a target is vulnerable or secure based on conjecture.
 Begin now with Phase A once at least one valid, authorized scope URL is present.
+```
+</details>
+<details>
+<summary><strong>TechStack-Discovery</strong></summary>
+# Codex Prompt — Comprehensive Web Application Technology Fingerprinting & Stack Reconnaissance
+
+## 1. Role and Objective
+
+You are a senior web application penetration tester, security researcher, and technology fingerprinting specialist operating from a Debian Linux terminal.
+
+Your task is to perform a comprehensive, systematic, evidence-based technology stack assessment of the web applications listed below.
+
+**Primary objective:** Identify as many technologies, products, frameworks, libraries, dependencies, components, plugins, middleware layers, backend services, infrastructure providers, and relevant versions as can be reliably established through authorized external observation.
+
+This is primarily a **technology reconnaissance and software inventory exercise**, not an exploitation exercise.
+
+For every identified technology, determine:
+
+- Technology or product name
+- Technology category
+- Exact version, version range, or unknown
+- Detection method
+- URL, file, path, header, cookie, or other location containing evidence
+- Relevant supporting evidence
+- Confidence level
+- Whether the technology was directly observed or inferred
+- Additional verification opportunities
+- Relevant security observations, without treating unconfirmed vulnerabilities as findings
+
+Do not fabricate technology names, versions, evidence, endpoints, or findings.
+
+## 2. Target Scope
+
+Populate the following target URLs before execution.
+
+```text
+TARGET_01 = https://example.com
+TARGET_02 =
+TARGET_03 =
+```
+
+Additional explicitly authorized domains, paths, and API endpoints:
+
+```text
+ADDITIONAL_SCOPE =
+```
+
+Rules:
+
+1. Interact only with explicitly authorized hosts and endpoints.
+2. Identify out-of-scope external resources but do not actively scan them.
+3. Do not automatically expand scope to discovered subdomains.
+4. No credential attacks, brute force, exploitation, or vulnerability payload spraying.
+5. Do not execute destructive or state-changing requests.
+6. Use conservative request rates and bounded crawl depth.
+7. Follow redirects only when destinations remain in scope.
+8. Respect any supplied engagement restrictions and testing windows.
+
+## 3. Execution Strategy
+
+First identify the tools available in the local environment:
+
+- nuclei
+- whatweb
+- httpx (ProjectDiscovery)
+- katana
+- curl
+- jq
+- grep
+- ripgrep
+- sed
+- awk
+- file
+- strings
+
+Inspect supported CLI flags before execution. Avoid assuming installed tool versions or blindly copying unsupported arguments.
+
+Use these tools together to cross-correlate results rather than relying on one fingerprinting mechanism.
+
+Execute the assessment in distinct phases.
+
+Create an organized working directory:
+
+```text
+techstack-assessment/
+├── targets/
+├── fingerprints/
+├── headers/
+├── cookies/
+├── crawls/
+├── javascript/
+├── assets/
+├── apis/
+├── methods/
+├── metadata/
+├── evidence/
+├── reports/
+│   ├── technology-inventory.md
+│   ├── technology-inventory.json
+│   ├── technology-inventory.csv
+│   ├── endpoint-inventory.md
+│   ├── security-observations.md
+│   └── executive-summary.md
+└── logs/
+```
+
+Use timestamps, preserve raw output, and avoid overwriting evidence.
+
+## 4. Phase 1 — Initial HTTP Fingerprinting
+
+Use httpx, WhatWeb, curl, and appropriate Nuclei technology-detection templates.
+
+Collect:
+
+- HTTP protocol version
+- HTTP status codes
+- Page titles
+- Content types
+- Response headers
+- Redirect chains
+- Redirect destinations
+- Server headers
+- X-Powered-By headers
+- X-AspNet-Version headers
+- X-AspNetMvc-Version headers
+- X-Generator headers
+- Via headers
+- X-Cache headers
+- CDN-specific headers
+- WAF-specific headers
+- Set-Cookie headers
+- TLS certificate metadata
+- HTTP/2 support
+- HTTP/3 advertisement
+- Compression mechanisms
+- Caching behavior
+- Content encoding
+- ETag characteristics
+- CORS response headers
+- Security response headers
+
+Record differences across:
+
+- Root pages
+- Application paths
+- CMS routes
+- API endpoints
+- Static asset paths
+- Localized routes
+- Error pages
+
+Identify inconsistencies that suggest different application components, reverse proxies, or backend services.
+
+Run WhatWeb with an appropriate detection level.
+
+Run ProjectDiscovery httpx with supported technology detection and response metadata options.
+
+Use Nuclei technology-detection templates in a controlled manner.
+
+Do not launch the complete Nuclei vulnerability template collection.
+
+Record exact evidence locations.
+
+## 5. Phase 2 — Frontend Technology Identification
+
+Identify frameworks and libraries including, where applicable:
+
+### JavaScript frameworks
+
+- React
+- Next.js
+- Vue.js
+- Nuxt
+- Angular
+- AngularJS
+- Svelte
+- SvelteKit
+- Astro
+- Remix
+- Gatsby
+- Ember
+- Backbone
+- jQuery
+- Preact
+- Alpine.js
+- Lit
+- Knockout.js
+
+### Supporting libraries
+
+- Redux
+- React Router
+- Zustand
+- MobX
+- TanStack Query
+- Axios
+- Lodash
+- Moment.js
+- Day.js
+- RxJS
+- D3.js
+- Chart.js
+- Highcharts
+- Three.js
+- GSAP
+
+### CSS and UI components
+
+- Bootstrap
+- Tailwind CSS
+- Material UI
+- Ant Design
+- Chakra UI
+- Bulma
+- Foundation
+- Semantic UI
+- Styled Components
+- Emotion
+- Sass
+- Less
+- PostCSS
+- CSS Modules
+
+Identify supporting indicators in:
+
+- HTML source
+- HTML attributes
+- Script tags
+- JavaScript bundle contents
+- CSS files
+- Asset names
+- Runtime globals
+- Source map metadata
+- Framework-specific DOM structures
+- Framework-specific resource paths
+- Hydration payloads
+- Inline configuration objects
+
+For example, inspect for indicators such as:
+
+```text
+__NEXT_DATA__
+_next/static/
+__NUXT__
+_nuxt/
+__webpack_require__
+webpackChunk
+react-dom
+react.production.min.js
+angular.module
+ng-version
+data-reactroot
+data-v-
+vite
+__vite__
+```
+
+These are examples, not an exhaustive detection list.
+
+Distinguish framework presence from confirmed version identification.
+
+Do not infer a specific React version solely from common runtime markers.
+
+## 6. Phase 3 — JavaScript Bundle and Dependency Analysis
+
+Use Katana to discover referenced JavaScript and CSS resources.
+
+Additionally extract static asset references directly from HTML.
+
+Identify:
+
+- Main application bundles
+- Runtime bundles
+- Vendor bundles
+- Lazy-loaded chunks
+- JavaScript modules
+- Dynamic imports
+- CSS bundles
+- Framework runtimes
+- Polyfills
+- Web workers
+- Service workers
+- WebAssembly files
+- Manifest files
+
+Inspect bundle contents for identifiable technologies.
+
+Search for package and build-system indicators including:
+
+```text
+webpack
+webpackChunk
+__webpack_require__
+vite
+rollup
+parcel
+esbuild
+babel
+typescript
+core-js
+regenerator-runtime
+terser
+swc
+react
+react-dom
+axios
+lodash
+moment
+jquery
+```
+
+Determine whether build output suggests:
+
+- Webpack
+- Vite
+- Rollup
+- Parcel
+- esbuild
+- Browserify
+- Babel
+- TypeScript
+- SWC
+- Terser
+
+Identify npm package names and versions when exposed in downloaded JavaScript, source maps, license banners, or metadata.
+
+When available, inspect publicly referenced:
+
+```text
+*.js.map
+*.css.map
+asset-manifest.json
+manifest.json
+site.webmanifest
+service-worker.js
+sw.js
+precache-manifest*.js
+```
+
+Source map handling:
+
+1. Only retrieve source maps explicitly referenced by in-scope assets or found through a small number of conventional suffix checks.
+2. Do not enumerate arbitrary source map filenames.
+3. Extract metadata needed for dependency identification.
+4. Do not publish source map contents or recovered application source code in the report.
+5. Do not follow external URLs discovered inside source maps.
+6. Do not collect or reproduce secrets, credentials, or tokens.
+
+Create a dependency inventory.
+
+Report the exact version only if there is sufficiently strong evidence.
+
+If a library is detected without a version, mark:
+
+`Version: Unknown`
+
+If a version is inferred, clearly document the inference and uncertainty.
+
+Do not classify dependencies as vulnerable based on uncertain version matches.
+
+## 7. Phase 4 — CMS and Digital Experience Platform Detection
+
+Identify CMS, DXP, portal, and content management technologies.
+
+Relevant examples:
+
+- WordPress
+- Drupal
+- Joomla
+- TYPO3
+- Optimizely CMS
+- Episerver
+- Sitecore
+- Adobe Experience Manager
+- Contentful
+- Strapi
+- Sanity
+- Umbraco
+- Kentico
+- Magnolia
+- Liferay
+- Shopify
+- Magento
+- WooCommerce
+- Ghost
+- Craft CMS
+- Storyblok
+- Prismic
+- Directus
+
+Analyze:
+
+- HTML generator metadata
+- CMS-specific resource paths
+- CMS-specific cookies
+- Content delivery API conventions
+- Content model structures
+- CMS-specific response headers
+- Static assets
+- Public manifests
+- Framework integrations
+- Public login page identifiers
+- Publicly visible CMS metadata
+
+Distinguish:
+
+1. Confirmed CMS identification
+2. Probable CMS identification
+3. Weak or circumstantial CMS indicators
+
+Do not assume a CMS is present solely because a conventional path exists.
+
+Do not attempt authentication bypasses or access restricted administration interfaces.
+
+## 8. Phase 5 — Backend Technology Fingerprinting
+
+Investigate publicly observable indicators of:
+
+### Languages and runtimes
+
+- Node.js
+- Deno
+- Bun
+- PHP
+- Python
+- Ruby
+- Java
+- Kotlin
+- C#
+- ASP.NET
+- ASP.NET Core
+- Go
+- Rust
+- Elixir
+
+### Backend frameworks
+
+- Express
+- Fastify
+- NestJS
+- Koa
+- Hapi
+- Next.js server runtime
+- Django
+- Flask
+- FastAPI
+- Laravel
+- Symfony
+- Spring Boot
+- Spring MVC
+- Ruby on Rails
+- ASP.NET MVC
+- ASP.NET Core MVC
+- ASP.NET Web API
+- Gin
+- Echo
+- Fiber
+- Phoenix
+
+### Web servers and gateways
+
+- Nginx
+- Apache HTTP Server
+- IIS
+- Kestrel
+- Caddy
+- LiteSpeed
+- OpenResty
+- Envoy
+- HAProxy
+- Traefik
+- Kong
+- YARP
+
+Use evidence such as:
+
+- Response headers
+- Cookie conventions
+- Public error handling
+- Redirect patterns
+- Publicly visible framework metadata
+- Documented application paths
+- Response formatting
+- Framework-specific generated content
+
+Consider whether infrastructure components may suppress or rewrite server headers.
+
+A Cloudflare or CDN response does not directly reveal the origin web server.
+
+Do not claim Node.js is the backend merely because the frontend was built using npm or Webpack.
+
+Distinguish build-time dependencies from runtime/server technologies.
+
+## 9. Phase 6 — Middleware, CDN, WAF, Hosting, and Infrastructure
+
+Identify observable indicators of:
+
+- Cloudflare
+- Akamai
+- Fastly
+- CloudFront
+- Azure Front Door
+- Azure App Service
+- AWS ALB
+- AWS API Gateway
+- Google Cloud Load Balancing
+- Vercel
+- Netlify
+- Cloudflare Workers
+- Reverse proxy technologies
+- API gateways
+- Web application firewalls
+- Load balancers
+- Application monitoring
+- Distributed tracing
+- Caching platforms
+
+Inspect relevant headers and cookies, including examples such as:
+
+```text
+CF-RAY
+CF-Cache-Status
+Server-Timing
+X-Cache
+X-Served-By
+X-Amz-Cf-Id
+X-Azure-Ref
+X-Forwarded-*
+Via
+Traceparent
+Tracestate
+```
+
+Do not treat user-supplied or untrusted headers as proof of deployment architecture.
+
+Identify CDN and edge infrastructure separately from probable origin services.
+
+Do not attempt origin-IP discovery or CDN/WAF bypass.
+
+## 10. Phase 7 — Cookies, Sessions, Authentication and Tracking Technologies
+
+Collect cookies from authorized, unauthenticated browsing.
+
+For every cookie, report:
+
+- Cookie name
+- Issuing hostname
+- Relevant request path
+- Cookie domain
+- Path attribute
+- Secure attribute
+- HttpOnly attribute
+- SameSite attribute
+- Expiration or Max-Age
+- Host-only or domain-scoped status
+- Likely purpose
+- Potential associated technology
+- Confidence level
+
+Identify indicators of:
+
+- ASP.NET session management
+- ASP.NET Core authentication
+- PHP sessions
+- Java servlet sessions
+- Express sessions
+- Cloudflare security cookies
+- CSRF protection frameworks
+- OAuth/OIDC integrations
+- Authentication providers
+- Consent management systems
+- Analytics providers
+- Marketing automation platforms
+
+Relevant examples:
+
+```text
+ASP.NET_SessionId
+.AspNetCore.Cookies
+.AspNetCore.Antiforgery.*
+PHPSESSID
+JSESSIONID
+connect.sid
+csrftoken
+XSRF-TOKEN
+cf_clearance
+__cf_bm
+```
+
+Cookie names are indicators, not conclusive proof of a backend implementation.
+
+Do not store session-token values or authentication credentials.
+
+Report cookie names and attributes only.
+
+Inspect cookies across different public application paths because different middleware may issue different cookies.
+
+## 11. Phase 8 — API and Interface Technology Identification
+
+Use Katana, downloaded JavaScript, HTML references, and HTTP response analysis to discover in-scope API endpoints.
+
+Identify evidence of:
+
+- REST APIs
+- GraphQL
+- JSON-RPC
+- SOAP
+- OData
+- gRPC-Web
+- WebSockets
+- Server-Sent Events
+- OpenAPI-described APIs
+- CMS Content Delivery APIs
+- Search APIs
+- Authentication endpoints
+- Backend-for-Frontend patterns
+
+Analyze:
+
+- Content types
+- API versioning conventions
+- JSON response structures
+- Standardized error structures
+- Pagination mechanisms
+- Authentication challenge headers
+- CORS configuration
+- Public API schema references
+- HTTP Allow headers
+
+Check known, publicly referenced API routes and a limited set of conventional discovery locations, including:
+
+```text
+/api
+/api/v1
+/api/v2
+/swagger
+/swagger/index.html
+/swagger/v1/swagger.json
+/openapi.json
+/openapi.yaml
+/api-docs
+/graphql
+/robots.txt
+/sitemap.xml
+```
+
+Treat a successful response as evidence of a route, not proof of a particular backend framework.
+
+Do not perform introspection of protected GraphQL services or request non-public business data.
+
+Create a separate API endpoint inventory.
+
+## 12. Phase 9 — HTTP Method and Response Behavior Analysis
+
+Analyze the behavior of authorized public application routes.
+
+Relevant methods:
+
+```text
+GET
+HEAD
+OPTIONS
+POST
+PUT
+PATCH
+DELETE
+TRACE
+```
+
+### Default method checks
+
+Perform:
+
+- GET requests
+- HEAD requests
+- OPTIONS requests
+
+Record:
+
+- HTTP status
+- Allow header
+- Content-Type
+- Redirect location
+- Response header differences
+- Error response format
+- Potential framework fingerprints
+
+### State-changing methods
+
+POST, PUT, PATCH, and DELETE must not be blindly issued across discovered endpoints.
+
+Only test these methods if an endpoint is specifically designated as a safe test fixture in the engagement scope.
+
+Use the exact approved request schema.
+
+Never submit test data to real contact forms, production business workflows, user-management routes, or integration endpoints.
+
+For public endpoints, method support may be inferred from OPTIONS, Allow headers, documented OpenAPI specifications, and application JavaScript.
+
+### TRACE
+
+Do not send TRACE requests unless explicitly approved.
+
+Record advertised method support separately from method support confirmed by actual requests.
+
+### Error behavior
+
+Compare expected 404 and unsupported-method responses, where safely observable.
+
+Identify possible server or framework markers.
+
+Avoid deliberately provoking server exceptions or malformed parser input.
+
+## 13. Phase 10 — Public Files and Metadata Discovery
+
+Inspect publicly linked files and a bounded set of conventional locations.
+
+Examples:
+
+```text
+/robots.txt
+/sitemap.xml
+/sitemap_index.xml
+/favicon.ico
+/manifest.json
+/site.webmanifest
+/asset-manifest.json
+/robots.txt
+/.well-known/security.txt
+/.well-known/openid-configuration
+/.well-known/assetlinks.json
+/apple-app-site-association
+/humans.txt
+```
+
+Identify:
+
+- Application metadata
+- CMS references
+- Framework references
+- Asset hashes
+- Build identifiers
+- Library names
+- Public environment labels
+- Authentication provider references
+- Public API specifications
+- Application route patterns
+
+Do not retrieve sensitive configuration files, private keys, environment files, repository metadata, or backup databases.
+
+Do not enumerate hidden files through brute force.
+
+If a publicly linked file unexpectedly contains secrets or sensitive information, stop processing that file and record only the minimum metadata necessary to report the exposure securely.
+
+## 14. Phase 11 — Cross-Correlation and Confidence Scoring
+
+Cross-correlate observations from:
+
+- httpx
+- WhatWeb
+- Nuclei
+- Katana
+- curl
+- JavaScript metadata
+- HTML markup
+- Response headers
+- Cookies
+- Public documentation
+- Source map metadata
+
+Use the following confidence model.
+
+**HIGH**
+
+Direct evidence such as an explicit product/version declaration in a trustworthy artifact, corroborated by another independent indicator.
+
+**MEDIUM**
+
+Multiple compatible fingerprints without an authoritative version declaration.
+
+**LOW**
+
+One ambiguous fingerprint or heuristic association.
+
+Do not automatically upgrade confidence because two tools use the same underlying fingerprint.
+
+Where tools disagree, report the conflict.
+
+Distinguish the following deployment roles:
+
+- Frontend runtime
+- Frontend build-time tooling
+- Client-side library
+- Origin backend
+- CMS
+- API gateway
+- Reverse proxy
+- CDN
+- WAF
+- Authentication service
+- Analytics/marketing integration
+- External third-party service
+
+For each version, use one of:
+
+- Exact version confirmed
+- Version range supported
+- Version inferred
+- Version unknown
+
+Avoid converting a version range into an exact release.
+
+## 15. Reporting Requirements
+
+Generate the following outputs.
+
+### A. Comprehensive Technology Inventory
+
+File:
+
+`reports/technology-inventory.md`
+
+Use this table:
+
+| Category | Technology | Version | Confidence | Evidence location | Detection method | Notes |
+|---|---|---|---|---|---|---|
+| Frontend | React | Unknown | Medium | `/static/js/main.js` | Bundle fingerprint | React runtime indicators |
+| Build tooling | Webpack | Unknown | High | `/static/js/runtime.js` | Runtime marker | Webpack bootstrap identified |
+| CDN | Cloudflare | Unknown | High | Response headers | curl/httpx | Cloudflare edge headers |
+
+The entries above illustrate the expected format only. They are not findings.
+
+Group the inventory by:
+
+1. Frontend frameworks
+2. JavaScript libraries
+3. CSS/UI frameworks
+4. Build tools and bundlers
+5. CMS/DXP platforms
+6. Backend languages and runtimes
+7. Backend frameworks
+8. Web servers
+9. Reverse proxies and middleware
+10. CDN/WAF/cloud infrastructure
+11. Authentication and session technologies
+12. API technologies
+13. Analytics, tracking and marketing
+14. Third-party integrations
+15. Other identified components
+
+### B. Detailed Evidence Record
+
+For every identified technology, create a structured record containing:
+
+```text
+Technology ID:
+Technology name:
+Category:
+Product/vendor:
+Deployment role:
+Version:
+Version certainty:
+Confidence:
+Detection tools:
+Affected host:
+Evidence URL:
+Evidence path:
+Evidence type:
+Evidence excerpt:
+HTTP status:
+Observation timestamp:
+Cross-validation:
+Conflicting evidence:
+Security relevance:
+Recommended verification:
+```
+
+Evidence excerpts must be concise and sanitized.
+
+Do not reproduce secret values, session identifiers, personal information, or full application source code.
+
+### C. Machine-Readable Inventory
+
+Create:
+
+`reports/technology-inventory.json`
+
+Each technology should have structured fields allowing later import into an asset inventory or security assessment system.
+
+Also create:
+
+`reports/technology-inventory.csv`
+
+Use stable category names and consistent confidence values.
+
+### D. API and Endpoint Inventory
+
+Create:
+
+`reports/endpoint-inventory.md`
+
+Include:
+
+| URL/Path | Method | Status | Content-Type | Technology indicators | Evidence |
+|---|---|---|---|---|---|
+
+Mark whether each method was:
+
+- Observed
+- Advertised
+- Documented
+- Not tested
+
+### E. Security Observations
+
+Create:
+
+`reports/security-observations.md`
+
+Focus on technology-related observations, for example:
+
+- Explicitly disclosed software versions
+- Identifiable outdated dependencies
+- Public source map availability
+- Framework debug artifacts
+- Missing recommended cookie attributes
+- Unnecessary technology disclosure headers
+- Public API documentation
+- Third-party dependency exposure
+
+Do not classify a component as vulnerable without reliable supporting evidence.
+
+Where CVEs are mentioned, distinguish confirmed affected versions from unverified matches.
+
+### F. Executive Summary
+
+Create:
+
+`reports/executive-summary.md`
+
+Include:
+
+- Number of discovered technologies
+- Number of confirmed versions
+- Number of version-inferred technologies
+- Number of technologies with unknown versions
+- Major frontend framework
+- Major backend technology, if established
+- Identified CMS/DXP
+- Build and dependency ecosystem
+- CDN/WAF
+- Authentication/session technologies
+- API technologies
+- Key evidence gaps
+- Recommended next verification steps
+
+Explicitly state which architecture elements cannot be determined externally.
+
+## 16. Execution and Quality Requirements
+
+During execution:
+
+1. Verify available tools and supported options.
+2. Create the output directories.
+3. Execute fingerprinting and crawling in controlled phases.
+4. Collect evidence.
+5. Inspect JavaScript assets and metadata.
+6. Analyze headers, cookies, APIs, and public files.
+7. Cross-correlate results.
+8. Deduplicate identified technologies.
+9. Create the reports.
+10. Validate JSON and CSV outputs.
+11. Verify that report evidence references existing collected artifacts.
+12. Summarize completed coverage and limitations.
+
+Use conservative concurrency and rate limiting.
+
+Default request budget:
+
+- Maximum 2 requests per second per host
+- Maximum 2 simultaneous requests per host
+- Maximum crawl depth 3
+- Maximum 500 discovered URLs processed per host
+- Maximum 50 MB of downloaded public assets per host
+- Maximum individual asset size 5 MB
+- Maximum 3 retries per request
+- Request timeout 15 seconds
+
+Track request counts and enforce these limits across all tools rather than independently per tool.
+
+Do not use aggressive Nuclei templates or recursive endpoint guessing.
+
+Do not expand scanning to third-party infrastructure.
+
+If an endpoint returns HTTP 429, repeated 5xx errors, or a clear anti-automation challenge, back off and record the limitation instead of attempting evasion.
+
+## 17. Final Deliverable
+
+Produce a professional, technically accurate technology stack assessment suitable for inclusion in a penetration testing report.
+
+The most important deliverable is a comprehensive, evidence-backed inventory answering:
+
+**Which technologies are used, which versions can be established, where are they observable, how certain is each identification, and what remains unknown?**
+
+Prioritize completeness of observable technology identification without sacrificing evidence quality.
+
+Do not stop after identifying React, a CDN, and a web server.
+
+Continue investigating distinct observable layers, dependencies, APIs, libraries, CMS components, and infrastructure until the authorized assessment coverage is complete or the defined request budget is exhausted.
+
+Conclude with the final report paths, discovered technology counts, and unresolved identification gaps.
+```text
+
 ```
 </details>
 
