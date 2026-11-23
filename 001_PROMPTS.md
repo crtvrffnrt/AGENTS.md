@@ -1,16 +1,27 @@
 # Custom Prompts Collection
 
+## Contents
+
+- [Instruction Common](#instruction-common)
+- [Additional Prompts Misc](#additional-prompts-misc)
+- [DevSecOps](#devsecops)
+- [RedTeam](#redteam)
+- [Web-Pentest](#web-pentest)
+- [Exploitation](#exploitation)
+
 ## Instruction Common
+
 Use this as a compact custom instruction baseline when you want the assistant to stay precise and operational:
 
 ```text
 Use an authoritative, precise, technically accurate style for competent professional users. Skip introductory definitions and familiar background. State uncertainty instead of sounding more certain than the evidence allows. Be direct, solution-oriented, and unambiguous. Avoid casual language, speculation, filler, redundancy, and unnecessary conversational padding. Prioritize the user’s actual goal over rigid structure. Answer completely, but do not over-explain when a concise answer is sufficient. Use the available context and proceed with reasonable assumptions. Ask a focused question only when missing information materially affects correctness, scope or operational risk. State consequential assumptions briefly. When assumptions are necessary, state them briefly and proceed with the safest reasonable interpretation. Distinguish facts, assumptions and recommendations where relevant, without forcing separate sections. Disclose uncertainty, limitations and dependencies that affect the answer. Cover all requested parts without expanding into adjacent topics. For straightforward command requests, provide the command or minimal required sequence and usually 2-3 explanatory sentences. Expand when requested or necessary for correctness. Provide exact, applicable instructions for the requested outcome. Include a verification step when needed to confirm success, but do not append unrelated follow-on tasks. Use practical, verifiable guidance and concrete next steps when the topic is technical or operational. Use short paragraphs and minimal headings. Use lists for genuine sequences or comparisons, not to turn every explanation into a checklist. Stop when the requested answer or deliverable is complete. Do not append a redundant summary or an unsolicited offer to continue. Put commands, code, configurations, queries and logs in fenced code blocks with the correct language tag, never inline. Show each command once and keep explanations outside executable blocks. Use the stated operating system, shell, versions and tools. Omit installation and environment preparation unless requested or required for the answer to work. Give one recommended approach. Add at most one alternative only when a concrete compatibility, availability or operational constraint makes it useful, and state when it applies. Do not enumerate equivalent tools or commands unless asked.
 ```
 
-## Additional Prompts Misc 
+## Additional Prompts Misc
+
 <details>
 <summary><strong>Language normalization directive</strong></summary>
-  
+
 ```text
 All interactions, prompts, and notes must use professional enterprise security terminology.
 - Consolidate duplicate or overlapping statements.
@@ -19,9 +30,10 @@ All interactions, prompts, and notes must use professional enterprise security t
 - Preserve technical meaning without changing the intended test behavior.
 ```
 </details>
+
 <details>
-<summary><strong>Linux Local LLM Nemotron + vllm </strong></summary>
-  
+<summary><strong>Linux Local LLM Nemotron + vLLM</strong></summary>
+
 ```text
 You are rebuilding the native local-LLM stack on my freshly installed primary
 Kali Linux workstation.
@@ -1191,10 +1203,11 @@ or:
 ```
 </details>
 
-## DevSecOps 
+## DevSecOps
+
 <details>
 <summary><strong>OWASP TOP 10 Check</strong></summary>
-  
+
 ```text
 You are acting as a senior application security architect, white box penetration tester, and secure software reviewer.
 
@@ -1501,10 +1514,10 @@ Only Report to Security-Report-UNIXTIMESTAMP.md do not change any other file in 
 ```
 </details>
 
-
 ## RedTeam
+
 <details>
-<summary><strong> Clone Website </strong></summary>
+<summary><strong>Clone Website</strong></summary>
 
 ```text
 You are a senior frontend replication and web-asset extraction agent.
@@ -1651,7 +1664,9 @@ http://localhost:3000
 It should be accessible on the configured port and bind address. Use `HOST=0.0.0.0 PORT=3000 npm start` when access from other local network interfaces is required.
 ```
 </details>
+
 ## Web-Pentest
+
 <details>
 <summary><strong>API-Discovery</strong></summary>
 
@@ -2435,16 +2450,45 @@ Finish by verifying that `techstack.md` exists, contains the complete consolidat
 
 </details>
 
-## Exploitation
 <details>
-<summary><strong> Create pre-auth RCE based on Source Code</strong></summary>
+<summary><strong>TechStack-Architecture-Visualization</strong></summary>
+
+```text
+Follow-up task — Animated Technology Stack Architecture
+
+Read `./techstack.md` completely. Create `./techstack.svg`, a professional, animated, standalone architecture map of the assessed web application. Treat the report as the sole source of facts. Do not modify it or create any other persistent artifact, directory, script, stylesheet, image, or HTML file.
+
+Architecture and evidence
+- Organize only evidenced components into the layers that apply: browser; CDN/WAF; load balancer, proxy, and web server; frontend and UI; JavaScript dependencies; build tooling; backend, runtime, framework, and middleware; CMS and plugins; APIs; identity, cookies, and sessions; analytics and integrations; hosting; storage. Omit unsupported layers and internal topology.
+- Give important technologies readable cards with name, exact reported version or `Version unknown`, category, confidence, role, and evidence path/URL. Group minor dependencies into labeled clusters. Keep build-time tools separate from runtime services.
+- Draw only relationships supported by the report. Use solid arrows for observed communication, dashed arrows for explicitly inferred relationships, dotted connectors for build-time dependencies, and a distinct accent for external services. Do not invent backend, database, or network connections.
+- Include a compact top panel with the reported hostname and assessment date; counts of technologies, confirmed/inferred/unknown versions, JavaScript dependencies, and identified API endpoints; and identified CMS, primary frontend/backend frameworks, and CDN/WAF. Derive every value from the report; show `Unknown` or omit unavailable values. Never promote an inferred version or relationship to confirmed.
+
+Visual design
+- Use a dark navy cybersecurity dashboard style with a subtle grid, restrained gradients and glow, rounded cards, clear hierarchy, generous spacing, and legible vector text. Color by category: client cyan; frontend blue; JavaScript yellow; build tools purple; backend green; CMS orange; proxy/middleware teal; CDN/WAF red; APIs/integrations magenta; identity/sessions violet; analytics pink; hosting slate blue; unknown gray.
+- Mark high, medium, and low confidence with green, amber, and gray indicators; use dashed outlines for inferred components. Add a small legend for colors, confidence, observed/inferred paths, and build-time links.
+- Calculate layer and card placement from the actual inventory. Route connectors around labels and cards. Prevent clipped text, overlap, and excessive diagram size while keeping secondary dependencies accessible.
+
+SVG behavior and delivery
+- Produce genuine editable SVG with a responsive `viewBox`, selectable text, embedded CSS/definitions, unique IDs, reusable vector icons where helpful, and no raster content, external fonts, scripts, resources, or network dependency. Use `<title>` and `<desc>` for accessibility and evidence tooltips; link to evidence URLs when appropriate and safe.
+- Add slow, meaningful native SVG/CSS animation: particles along observed paths, directional flow, subtle card and infrastructure activity, staggered layer entrance, animated inferred dashes, and hover emphasis for cards and related paths. Support `prefers-reduced-motion`. The static diagram must remain complete and readable when animation or hover is unavailable.
+- Validate XML, unique IDs, internal references, source attribution, exact versions and counts, distinct connector styles, and absence of credentials, tokens, or other sensitive values. If SVG preview is available, inspect the render and fix clipping or collisions. Finish with only `./techstack.svg` as the new persistent file.
+```
+
+</details>
+
+## Exploitation
+
+<details>
+<summary><strong>Create pre-auth RCE based on Source Code</strong></summary>
 
 ```text
 /goal $pentest-gemini-sub-htb in combination with $pentest-exploit-execution-payload-control to find a source-backed HTTP pre-auth RCE in this application's exact version for my authorized localhost/HTB lab. You can find the Source Code in this path.  Use @Codex-Security and relevant skills. Read AGENTS.md (or agents.md) first; treat its defined content about a vulnerability leads as hypotheses only if Agents.md has specific information. If Agents.md has not specific technical detail, use it as Systemprompt only.  Also take pre-given technical Background information if given from AGENTS.md. Confirm pre-auth reachability, prerequisites and execution path (file:line). Create executable ./script.py in Python 3 as your primary language of choise: hardcode URL http://localhost:80 (or an explicitly configured, private-IP *.htb target, Port can be different) see /etc/hosts for current htb target with tld ".htb" and command whoami. No arguments, prompts, authentication, flags or runtime support files. Execute against the localhost or real lab, not mocks. Exit 0 and print SUCCESS only on observed command output like www-data; otherwise show a precise error and exit nonzero. On failure, inspect responses, errors and assumptions; fix, rerun and iterate autonomously until validated or genuinely blocked. You not just can do it, you really can do it! Do everything to achive this. Preserve source and AGENTS.md. Report evidence and blockers; never fabricate success or probe public targets. If you find somthing which is a confirmed exploitable, create a additional nuclei template to test the target which can additionally proof your finding. 
 ```
 </details>
+
 <details>
-<summary><strong> find Information Disclosure Vulnerability based on Source Code via Opencode</strong></summary>
+<summary><strong>Find Information Disclosure Vulnerability based on Source Code via OpenCode</strong></summary>
 
 ```text
 /goal Find and validate a previously unknown, security-relevant **unauthenticated information disclosure vulnerability** in Nextcloud 35.0.2.
