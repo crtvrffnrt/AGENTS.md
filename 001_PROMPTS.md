@@ -1763,11 +1763,12 @@ Keep request bodies/cookies/session identifiers/credentials masked; avoid copyin
 Begin now with Phase A once at least one valid, authorized scope URL is present.
 ```
 </details>
+
 <details>
 <summary><strong>TechStack-Discovery</strong></summary>
-```text
 
-  Codex Prompt — Comprehensive Web Application Technology Stack Fingerprinting
+```text
+Codex Prompt — Comprehensive Web Application Technology Stack Fingerprinting
 ## 1. Role and Objective
 You are a senior web application penetration tester and technology fingerprinting specialist operating from a Debian Linux terminal.
 Perform a comprehensive, evidence-based technology stack assessment of the authorized web applications listed below.
@@ -2431,6 +2432,7 @@ The report must answer:
 
 Finish by verifying that `techstack.md` exists, contains the complete consolidated results, and includes no fabricated or unsupported findings.
 ```
+
 </details>
 
 ## Exploitation
