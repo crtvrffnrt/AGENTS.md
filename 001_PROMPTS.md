@@ -2528,6 +2528,29 @@ SVG behavior and delivery
 <summary><strong>Benchmark: HTB reach UserFlag</strong></summary>
 
 ```text
+**Target:** `TARGET_IP` / `TARGET_HOST`
+**Goal:** Userflag only
+---
 
+## Scope enforced:
+- Single host: `TARGET_IP` 
+- Open ports to assess: customizable list
+- Web surface: http://TARGET_HOST (find all reachable Webhosts, Subdomains, VHOST and WebApps behind)
+
+## Strategy hints (prioritized)
+1. **Portscan alle Ports** → Initial Access Initial Foothold → User.txt
+   - Quick full/syn scan of all ports to identify services
+2. **Auth surface** — login/register/reset enumeration on web
+   - Check if password reset verifies name or confirmation code
+   - Probe for IDOR/BOLA by design (booking lookups, ?code=, manage/resend flows)
+3. **Pivot to host** — 
+   - Pull config files for secrets; grab user.txt. Do what needed to find user.txt
+4. **Reporting** — every confirmed vuln via report_finding with reproducible evidence, bound to assets; dead ends recorded as ruled-out facts. Make report short.
+
+## Definition of done
+- Initial access + verbatim user.txt, documented attack chain
+- Privilege-escalation not needed after user.txt content was found.
+
+---
 ```
 </details>
