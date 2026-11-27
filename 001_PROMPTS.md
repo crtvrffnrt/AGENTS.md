@@ -2540,6 +2540,7 @@ SVG behavior and delivery
 ## Strategy hints (prioritized)
 1. **Portscan alle Ports** → Initial Access Initial Foothold → User.txt
    - Quick full/syn scan of all ports to identify services
+2. For all Scans like nmap, nuclei, fuff or other tools always scan fast, aggressive, and extensive. No need to slow down scans. Use Parralelism where possible. Be offensive. 
 
 ## Execution Loop:
 1. Enumerate open TCP/UDP ports, service banners, and HTTP/HTTPS endpoints (`nmap`, service probes, directory/path discovery, and response inspection).
