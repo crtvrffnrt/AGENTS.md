@@ -2536,7 +2536,7 @@ SVG behavior and delivery
 - Single host: Strictly confine all scanning, enumeration, and testing to target. Do not touch external hosts or out-of-scope networks for offensive testing. Its ok to search the internet about, CVES, Bugs, Hacktricks How tos or similar sources to reach the goal.
 - Open ports to assess: Check which ports are open in full Port Range. Detail Check each open port after. Focus on Web related Ports and Sockets having Web-Applications or are related to like api, websocket or other things. 
 - Web surface: Check http://TARGET_HOST:PORT and https://TARGET_HOST:PORT (find all reachable Webhosts, Subdomains, VHOST, Paths and WebApps behind)
-
+- Do not search the web for solutions, writeups or hints about how to solve the machine. 
 ## Strategy hints (prioritized)
 1. **Portscan alle Ports** → Initial Access Initial Foothold → User.txt
    - Quick full/syn scan of all ports to identify services
