@@ -2546,7 +2546,7 @@ SVG behavior and delivery
 1. Enumerate open TCP/UDP ports, service banners, and HTTP/HTTPS endpoints (`nmap`, service probes, directory/path discovery, and response inspection).
 2. Analyze exposed web applications, APIs, parameters, authentication flows, and misconfigurations to form concrete, testable hypotheses.
 3. Validate high-probability initial-access paths (injection, broken authentication, weak/default credentials, or unsafe file/script handling and more) with targeted verification.
-4. Once shell or command execution is obtained, locate and read `user.txt`, record the exact path, command, and flag value, and terminate the run. 
+4. Once shell or command execution is obtained, locate and read `user.txt`, record the exact path, command, and flag value, and terminate the run. Do whatever needed to achive this
 
 ## Definition of done
 1. Initial access + verbatim user.txt (Prio Target. Do not stop until this is achived) and conside: Privilege-escalation not needed after user.txt content was found.
